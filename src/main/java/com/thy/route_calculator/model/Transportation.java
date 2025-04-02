@@ -11,11 +11,13 @@ import org.hibernate.type.SqlTypes;
 @Entity
 @Table(name = "transportation")
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Transportation {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Setter(AccessLevel.NONE)
   @Column(name = "id")
   private Long id;
 

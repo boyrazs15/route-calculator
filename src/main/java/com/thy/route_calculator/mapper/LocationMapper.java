@@ -6,12 +6,12 @@ import com.thy.route_calculator.model.Location;
 public class LocationMapper {
 
   public static Location toEntity(LocationDto dto) {
-    Location location = new Location();
-    location.setName(dto.getName());
-    location.setCountry(dto.getCountry());
-    location.setCity(dto.getCity());
-    location.setLocationCode(dto.getLocationCode());
-    return location;
+    return Location.builder()
+        .name(dto.getName())
+        .country(dto.getCountry())
+        .city(dto.getCity())
+        .locationCode(dto.getLocationCode())
+        .build();
   }
 
   public static LocationDto toDto(Location entity) {

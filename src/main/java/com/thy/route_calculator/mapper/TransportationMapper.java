@@ -8,12 +8,12 @@ public class TransportationMapper {
 
   public static Transportation toEntity(
       TransportationDto dto, Location origin, Location destination) {
-    Transportation transportation = new Transportation();
-    transportation.setOriginLocation(origin);
-    transportation.setDestinationLocation(destination);
-    transportation.setTransportationType(dto.getTransportationType());
-    transportation.setOperatingDays(dto.getOperatingDays());
-    return transportation;
+    return Transportation.builder()
+        .originLocation(origin)
+        .destinationLocation(destination)
+        .transportationType(dto.getTransportationType())
+        .operatingDays(dto.getOperatingDays())
+        .build();
   }
 
   public static TransportationDto toDto(Transportation entity) {
