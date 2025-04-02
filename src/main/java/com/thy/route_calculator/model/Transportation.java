@@ -23,12 +23,12 @@ public class Transportation {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @NotNull
     @JoinColumn(name = "origin_location_id", nullable = false)
-    private Location originLocationId;
+    private Location originLocation;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @NotNull
     @JoinColumn(name = "destination_location_id", nullable = false)
-    private Location destinationLocationId;
+    private Location destinationLocation;
 
     @Enumerated(EnumType.STRING)
     @NotNull

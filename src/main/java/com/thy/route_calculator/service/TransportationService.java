@@ -9,5 +9,6 @@ public interface TransportationService {
     Transportation save(Transportation transportation);
     Optional<Transportation> findById(Long id);
     List<Transportation> findAll();
+    Transportation update(Long id, Transportation transportation);
     void deleteById(Long id);
 }

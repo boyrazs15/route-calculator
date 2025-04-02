@@ -35,6 +35,19 @@ public class TransportationServiceImpl implements TransportationService {
     }
 
     @Override
+    public Transportation update(Long id, Transportation updatedTransportation) {
+        Transportation existing = transportationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Transportation not found with id: " + id));
+
+        existing.setOriginLocation(updatedTransportation.getOriginLocation());
+        existing.setDestinationLocation(updatedTransportation.getDestinationLocation());
+        existing.setOperatingDays(updatedTransportation.getOperatingDays());
+        existing.setTransportationType(updatedTransportation.getTransportationType());
+
+        return transportationRepository.save(existing);
+    }
+
+    @Override
     public void deleteById(Long id) {
         transportationRepository.deleteById(id);
     }

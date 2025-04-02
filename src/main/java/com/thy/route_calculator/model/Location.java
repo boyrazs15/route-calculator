@@ -1,32 +1,35 @@
 package com.thy.route_calculator.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="location")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotBlank
     @Column(name="id")
     private Long id;
 
-    @NotBlank
+    @NotNull
     @Column(name="name", nullable = false)
     private String name;
 
-    @NotBlank
+    @NotNull
     @Column(name="country", nullable = false)
     private String country;
 
-    @NotBlank
+    @NotNull
     @Column(name="city", nullable = false)
     private String city;
 
-    @NotBlank
+    @NotNull
     @Column(name = "location_code", unique = true, nullable = false)
     private String locationCode;
 

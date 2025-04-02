@@ -35,6 +35,19 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
+    public Location update(Long id, Location updatedLocation) {
+        Location existing = locationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Location not found with id: " + id));
+
+        existing.setName(updatedLocation.getName());
+        existing.setCountry(updatedLocation.getCountry());
+        existing.setCity(updatedLocation.getCity());
+        existing.setLocationCode(updatedLocation.getLocationCode());
+
+        return locationRepository.save(existing);
+    }
+
+    @Override
     public void deleteById(Long id) {
         locationRepository.deleteById(id);
     }
