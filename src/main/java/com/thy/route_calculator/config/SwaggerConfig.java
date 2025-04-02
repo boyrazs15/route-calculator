@@ -8,12 +8,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfig {
 
-    @Bean
-    public OpenAPI customOpenAPI() {
-        return new OpenAPI()
-                .info(new Info()
-                        .title("Route Calculator API")
-                        .version("1.0")
-                        .description("CRUD endpoints for Location entity"));
-    }
+  @Bean
+  public OpenAPI customOpenAPI() {
+    return new OpenAPI()
+        .info(
+            new Info()
+                .title("Route Calculator API")
+                .version("1.0")
+                .description("CRUD endpoints for Location entity"));
+  }
 }
