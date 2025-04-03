@@ -11,6 +11,7 @@ public class DataConflictException extends ApiException {
     if (persistentClassName == null || persistentClassName.trim().isEmpty()) {
       return "Row was updated or deleted by another transaction. Please refresh and try again.";
     }
-    return persistentClassName.substring(persistentClassName.lastIndexOf('.') + 1) + " row was updated or deleted by another transaction. Please refresh and try again.";
+    return persistentClassName.substring(persistentClassName.lastIndexOf('.') + 1)
+        + " row was updated or deleted by another transaction. Please refresh and try again.";
   }
 }

@@ -14,8 +14,10 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ApiErrorResponse> handleApiException(ApiException ex) {
     return buildErrorResponse(ex.getErrorCode(), ex.getHttpStatus(), ex.getMessage(), ex.getData());
   }
+
   @ExceptionHandler(OptimisticLockingFailureException.class)
-  public ResponseEntity<ApiErrorResponse> handleOptimisticLock(OptimisticLockingFailureException ex) {
+  public ResponseEntity<ApiErrorResponse> handleOptimisticLock(
+      OptimisticLockingFailureException ex) {
     String modelName = null;
 
     if (ex instanceof ObjectOptimisticLockingFailureException) {
@@ -25,11 +27,10 @@ public class GlobalExceptionHandler {
     DataConflictException conflict = new DataConflictException(modelName);
 
     return buildErrorResponse(
-            conflict.getErrorCode(),
-            conflict.getHttpStatus(),
-            conflict.getMessage(),
-            conflict.getData()
-    );
+        conflict.getErrorCode(),
+        conflict.getHttpStatus(),
+        conflict.getMessage(),
+        conflict.getData());
   }
 
   @ExceptionHandler(Exception.class)

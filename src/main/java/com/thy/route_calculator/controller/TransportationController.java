@@ -38,7 +38,7 @@ public class TransportationController {
     Location destination =
         locationRepository
             .findById(dto.getDestinationLocationId())
-                .orElseThrow(() -> new LocationNotFoundException(dto.getDestinationLocationId()));
+            .orElseThrow(() -> new LocationNotFoundException(dto.getDestinationLocationId()));
 
     Transportation entity = TransportationMapper.toEntity(dto, origin, destination);
     Transportation saved = transportationService.save(entity);
@@ -64,12 +64,12 @@ public class TransportationController {
     Location origin =
         locationRepository
             .findById(dto.getOriginLocationId())
-                .orElseThrow(() -> new LocationNotFoundException(dto.getOriginLocationId()));
+            .orElseThrow(() -> new LocationNotFoundException(dto.getOriginLocationId()));
 
     Location destination =
         locationRepository
             .findById(dto.getDestinationLocationId())
-                .orElseThrow(() -> new LocationNotFoundException(dto.getDestinationLocationId()));
+            .orElseThrow(() -> new LocationNotFoundException(dto.getDestinationLocationId()));
 
     Transportation updatedEntity = TransportationMapper.toEntity(dto, origin, destination);
 
