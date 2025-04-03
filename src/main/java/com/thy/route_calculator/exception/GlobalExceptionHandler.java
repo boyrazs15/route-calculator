@@ -3,6 +3,7 @@ package com.thy.route_calculator.exception;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -13,11 +14,22 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ApiErrorResponse> handleApiException(ApiException ex) {
     return buildErrorResponse(ex.getErrorCode(), ex.getHttpStatus(), ex.getMessage(), ex.getData());
   }
-
   @ExceptionHandler(OptimisticLockingFailureException.class)
-  public ResponseEntity<ApiErrorResponse> handleOptimisticLock(
-      OptimisticLockingFailureException ex) {
-    return buildErrorResponse(ErrorCode.DATA_CONFLICT, HttpStatus.CONFLICT, ex.getMessage(), null);
+  public ResponseEntity<ApiErrorResponse> handleOptimisticLock(OptimisticLockingFailureException ex) {
+    String modelName = null;
+
+    if (ex instanceof ObjectOptimisticLockingFailureException) {
+      modelName = (((ObjectOptimisticLockingFailureException) ex).getPersistentClassName());
+    }
+
+    DataConflictException conflict = new DataConflictException(modelName);
+
+    return buildErrorResponse(
+            conflict.getErrorCode(),
+            conflict.getHttpStatus(),
+            conflict.getMessage(),
+            conflict.getData()
+    );
   }
 
   @ExceptionHandler(Exception.class)
