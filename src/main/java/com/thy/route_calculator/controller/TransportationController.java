@@ -9,6 +9,8 @@ import com.thy.route_calculator.service.TransportationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,7 +63,7 @@ public class TransportationController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<TransportationDto> updateTransportation(
+  public ResponseEntity<Object> updateTransportation(
       @PathVariable Long id, @RequestBody TransportationDto dto) {
     Location origin =
         locationRepository
@@ -74,9 +76,18 @@ public class TransportationController {
             .orElseThrow(() -> new RuntimeException("Destination location not found"));
 
     Transportation updatedEntity = TransportationMapper.toEntity(dto, origin, destination);
-    Transportation updated = transportationService.update(id, updatedEntity);
-
-    return ResponseEntity.ok(TransportationMapper.toDto(updated));
+    try {
+      Transportation updated = transportationService.update(id, updatedEntity);
+      return ResponseEntity.ok(TransportationMapper.toDto(updated));
+    } catch (OptimisticLockingFailureException e) {
+      return ResponseEntity.status(HttpStatus.CONFLICT)
+          .body(
+              "Transportation has been modified by another transaction. Please refresh and try again.");
+    } catch (RuntimeException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
   }
 
   @DeleteMapping("/{id}")

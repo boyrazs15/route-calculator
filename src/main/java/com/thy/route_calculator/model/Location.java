@@ -3,20 +3,19 @@ package com.thy.route_calculator.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "location")
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Location {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Setter(AccessLevel.NONE)
-  @Column(name = "id")
-  private Long id;
-
+@SQLDelete(sql = "UPDATE location SET deleted = true WHERE id = ? AND version = ?")
+@Where(clause = "deleted = false")
+public class Location extends BaseEntity {
   @NotNull
   @Column(name = "name", nullable = false)
   private String name;

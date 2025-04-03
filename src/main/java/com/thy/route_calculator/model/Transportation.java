@@ -6,21 +6,20 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "transportation")
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Transportation {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Setter(AccessLevel.NONE)
-  @Column(name = "id")
-  private Long id;
-
+@SQLDelete(sql = "UPDATE location SET deleted = true WHERE id = ? AND version = ?")
+@Where(clause = "deleted = false")
+public class Transportation extends BaseEntity {
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   @NotNull
   @JoinColumn(name = "origin_location_id", nullable = false)
