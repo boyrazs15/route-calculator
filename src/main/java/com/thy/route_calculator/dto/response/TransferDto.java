@@ -1,4 +1,4 @@
-package com.thy.route_calculator.dto;
+package com.thy.route_calculator.dto.response;
 
 import com.thy.route_calculator.model.enums.TransportationType;
 import lombok.AllArgsConstructor;

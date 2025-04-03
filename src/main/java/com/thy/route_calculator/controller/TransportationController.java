@@ -1,11 +1,10 @@
 package com.thy.route_calculator.controller;
 
 import com.thy.route_calculator.dto.TransportationDto;
-import com.thy.route_calculator.exception.LocationNotFoundException;
 import com.thy.route_calculator.mapper.TransportationMapper;
 import com.thy.route_calculator.model.Location;
 import com.thy.route_calculator.model.Transportation;
-import com.thy.route_calculator.repository.LocationRepository;
+import com.thy.route_calculator.service.LocationService;
 import com.thy.route_calculator.service.TransportationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -19,26 +18,19 @@ import org.springframework.web.bind.annotation.*;
 public class TransportationController {
 
   private final TransportationService transportationService;
-  private final LocationRepository locationRepository;
+  private final LocationService locationService;
 
   public TransportationController(
-      TransportationService transportationService, LocationRepository locationRepository) {
+      TransportationService transportationService, LocationService locationService) {
     this.transportationService = transportationService;
-    this.locationRepository = locationRepository;
+    this.locationService = locationService;
   }
 
   @PostMapping
   public ResponseEntity<TransportationDto> createTransportation(
       @RequestBody TransportationDto dto) {
-    Location origin =
-        locationRepository
-            .findById(dto.getOriginLocationId())
-            .orElseThrow(() -> new LocationNotFoundException(dto.getOriginLocationId()));
-
-    Location destination =
-        locationRepository
-            .findById(dto.getDestinationLocationId())
-            .orElseThrow(() -> new LocationNotFoundException(dto.getDestinationLocationId()));
+    Location origin = locationService.findById(dto.getOriginLocationId());
+    Location destination = locationService.findById(dto.getDestinationLocationId());
 
     Transportation entity = TransportationMapper.toEntity(dto, origin, destination);
     Transportation saved = transportationService.save(entity);
@@ -61,15 +53,8 @@ public class TransportationController {
   @PutMapping("/{id}")
   public ResponseEntity<TransportationDto> updateTransportation(
       @PathVariable Long id, @RequestBody TransportationDto dto) {
-    Location origin =
-        locationRepository
-            .findById(dto.getOriginLocationId())
-            .orElseThrow(() -> new LocationNotFoundException(dto.getOriginLocationId()));
-
-    Location destination =
-        locationRepository
-            .findById(dto.getDestinationLocationId())
-            .orElseThrow(() -> new LocationNotFoundException(dto.getDestinationLocationId()));
+    Location origin = locationService.findById(dto.getOriginLocationId());
+    Location destination = locationService.findById(dto.getDestinationLocationId());
 
     Transportation updatedEntity = TransportationMapper.toEntity(dto, origin, destination);
 

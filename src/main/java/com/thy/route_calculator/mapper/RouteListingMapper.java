@@ -1,11 +1,11 @@
 package com.thy.route_calculator.mapper;
 
-import com.thy.route_calculator.dto.RouteListingDto;
-import com.thy.route_calculator.dto.TransferDto;
+import com.thy.route_calculator.dto.response.RouteListingResponseDto;
+import com.thy.route_calculator.dto.response.TransferDto;
 import com.thy.route_calculator.model.Transportation;
 
 public class RouteListingMapper {
-  public static RouteListingDto toDto(
+  public static RouteListingResponseDto toDto(
       Transportation beforeFlightTransfer,
       Transportation flight,
       Transportation afterFlightTransfer) {
@@ -25,7 +25,7 @@ public class RouteListingMapper {
             afterFlightTransfer.getDestinationLocation().getName(),
             afterFlightTransfer.getTransportationType());
 
-    RouteListingDto dto = new RouteListingDto();
+    RouteListingResponseDto dto = new RouteListingResponseDto();
 
     dto.setDescription("via" + flight.getOriginLocation().getName());
     dto.setBeforeFlightTransfer(beforeFlightTransferDto);
