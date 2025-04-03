@@ -1,6 +1,7 @@
 package com.thy.route_calculator.controller;
 
 import com.thy.route_calculator.dto.TransportationDto;
+import com.thy.route_calculator.exception.LocationNotFoundException;
 import com.thy.route_calculator.mapper.TransportationMapper;
 import com.thy.route_calculator.model.Location;
 import com.thy.route_calculator.model.Transportation;
@@ -32,12 +33,12 @@ public class TransportationController {
     Location origin =
         locationRepository
             .findById(dto.getOriginLocationId())
-            .orElseThrow(() -> new RuntimeException("Origin location not found"));
+            .orElseThrow(() -> new LocationNotFoundException(dto.getOriginLocationId()));
 
     Location destination =
         locationRepository
             .findById(dto.getDestinationLocationId())
-            .orElseThrow(() -> new RuntimeException("Destination location not found"));
+                .orElseThrow(() -> new LocationNotFoundException(dto.getDestinationLocationId()));
 
     Transportation entity = TransportationMapper.toEntity(dto, origin, destination);
     Transportation saved = transportationService.save(entity);
@@ -63,12 +64,12 @@ public class TransportationController {
     Location origin =
         locationRepository
             .findById(dto.getOriginLocationId())
-            .orElseThrow(() -> new RuntimeException("Origin location not found"));
+                .orElseThrow(() -> new LocationNotFoundException(dto.getOriginLocationId()));
 
     Location destination =
         locationRepository
             .findById(dto.getDestinationLocationId())
-            .orElseThrow(() -> new RuntimeException("Destination location not found"));
+                .orElseThrow(() -> new LocationNotFoundException(dto.getDestinationLocationId()));
 
     Transportation updatedEntity = TransportationMapper.toEntity(dto, origin, destination);
 
