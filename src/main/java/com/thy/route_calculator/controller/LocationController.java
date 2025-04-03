@@ -8,8 +8,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.OptimisticLockingFailureException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,11 +31,8 @@ public class LocationController {
 
   @GetMapping("/{id}")
   public ResponseEntity<LocationDto> getLocation(@PathVariable Long id) {
-    return locationService
-        .findById(id)
-        .map(LocationMapper::toDto)
-        .map(ResponseEntity::ok)
-        .orElse(ResponseEntity.notFound().build());
+    Location location = locationService.findById(id);
+    return ResponseEntity.ok(LocationMapper.toDto(location));
   }
 
   @GetMapping
@@ -48,19 +43,10 @@ public class LocationController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Object> updateLocation(
+  public ResponseEntity<LocationDto> updateLocation(
       @PathVariable Long id, @RequestBody LocationDto dto) {
-    try {
-      Location updated = locationService.update(id, LocationMapper.toEntity(dto));
-      return ResponseEntity.ok(LocationMapper.toDto(updated));
-    } catch (OptimisticLockingFailureException e) {
-      return ResponseEntity.status(HttpStatus.CONFLICT)
-          .body("Location has been modified by another transaction. Please refresh and try again.");
-    } catch (RuntimeException e) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-    }
+    Location updated = locationService.update(id, LocationMapper.toEntity(dto));
+    return ResponseEntity.ok(LocationMapper.toDto(updated));
   }
 
   @DeleteMapping("/{id}")

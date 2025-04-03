@@ -1,10 +1,10 @@
 package com.thy.route_calculator.service.impl;
 
+import com.thy.route_calculator.exception.TransportationNotFoundException;
 import com.thy.route_calculator.model.Transportation;
 import com.thy.route_calculator.repository.TransportationRepository;
 import com.thy.route_calculator.service.TransportationService;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +24,10 @@ public class TransportationServiceImpl implements TransportationService {
   }
 
   @Override
-  public Optional<Transportation> findById(Long id) {
-    return transportationRepository.findById(id);
+  public Transportation findById(Long id) {
+    return transportationRepository
+        .findById(id)
+        .orElseThrow(() -> new TransportationNotFoundException(id));
   }
 
   @Override
@@ -38,7 +40,7 @@ public class TransportationServiceImpl implements TransportationService {
     Transportation existing =
         transportationRepository
             .findById(id)
-            .orElseThrow(() -> new RuntimeException("Transportation not found with id: " + id));
+            .orElseThrow(() -> new TransportationNotFoundException(id));
 
     existing.setOriginLocation(updatedTransportation.getOriginLocation());
     existing.setDestinationLocation(updatedTransportation.getDestinationLocation());
