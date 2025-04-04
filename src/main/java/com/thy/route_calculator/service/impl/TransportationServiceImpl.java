@@ -4,7 +4,9 @@ import com.thy.route_calculator.exception.TransportationNotFoundException;
 import com.thy.route_calculator.model.entity.Transportation;
 import com.thy.route_calculator.repository.TransportationRepository;
 import com.thy.route_calculator.service.TransportationService;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,24 @@ public class TransportationServiceImpl implements TransportationService {
     return transportationRepository
         .findById(id)
         .orElseThrow(() -> new TransportationNotFoundException(id));
+  }
+
+  @Override
+  public List<Optional<Transportation>> findAvailableFlightTransportations(
+      String originLocationCity, String destinationLocationCity, LocalDateTime date) {
+    return List.of();
+  }
+
+  @Override
+  public List<Optional<Transportation>> findAvailableBeforeFlightTransportations(
+      Long originLocationId, Transportation flightTransportation, LocalDateTime date) {
+    return List.of();
+  }
+
+  @Override
+  public List<Optional<Transportation>> findAvailableAfterFlightTransportations(
+      Transportation flightTransportation, Long destinationLocationId, LocalDateTime date) {
+    return List.of();
   }
 
   @Override
