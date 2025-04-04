@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class TransferDto {
+public class RouteStepDto {
   private String origin;
   private String destination;
   private TransportationType transportationType;

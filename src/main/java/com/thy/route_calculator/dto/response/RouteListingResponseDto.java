@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class RouteListingResponseDto {
   private String description;
-  private TransferDto beforeFlightTransfer;
-  private TransferDto flight;
-  private TransferDto afterFlightTransfer;
+  private RouteStepDto beforeFlightTransfer;
+  private RouteStepDto flight;
+  private RouteStepDto afterFlightTransfer;
 }
