@@ -1,4 +1,4 @@
-package com.thy.route_calculator.model;
+package com.thy.route_calculator.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

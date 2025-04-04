@@ -1,6 +1,6 @@
 package com.thy.route_calculator.repository;
 
-import com.thy.route_calculator.model.Location;
+import com.thy.route_calculator.model.entity.Location;
 import jakarta.persistence.LockModeType;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,7 +1,7 @@
 package com.thy.route_calculator.service.impl;
 
 import com.thy.route_calculator.exception.LocationNotFoundException;
-import com.thy.route_calculator.model.Location;
+import com.thy.route_calculator.model.entity.Location;
 import com.thy.route_calculator.repository.LocationRepository;
 import com.thy.route_calculator.service.LocationService;
 import java.util.List;

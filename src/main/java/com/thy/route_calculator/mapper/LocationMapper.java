@@ -1,7 +1,7 @@
 package com.thy.route_calculator.mapper;
 
 import com.thy.route_calculator.dto.LocationDto;
-import com.thy.route_calculator.model.Location;
+import com.thy.route_calculator.model.entity.Location;
 
 public class LocationMapper {
 

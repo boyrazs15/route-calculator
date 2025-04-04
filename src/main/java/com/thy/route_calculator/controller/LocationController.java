@@ -2,7 +2,7 @@ package com.thy.route_calculator.controller;
 
 import com.thy.route_calculator.dto.LocationDto;
 import com.thy.route_calculator.mapper.LocationMapper;
-import com.thy.route_calculator.model.Location;
+import com.thy.route_calculator.model.entity.Location;
 import com.thy.route_calculator.service.LocationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;

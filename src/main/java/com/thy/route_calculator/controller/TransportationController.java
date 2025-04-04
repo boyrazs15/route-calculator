@@ -2,8 +2,8 @@ package com.thy.route_calculator.controller;
 
 import com.thy.route_calculator.dto.TransportationDto;
 import com.thy.route_calculator.mapper.TransportationMapper;
-import com.thy.route_calculator.model.Location;
-import com.thy.route_calculator.model.Transportation;
+import com.thy.route_calculator.model.entity.Location;
+import com.thy.route_calculator.model.entity.Transportation;
 import com.thy.route_calculator.service.LocationService;
 import com.thy.route_calculator.service.TransportationService;
 import io.swagger.v3.oas.annotations.tags.Tag;

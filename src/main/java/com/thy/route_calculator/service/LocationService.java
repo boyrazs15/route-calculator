@@ -1,6 +1,6 @@
 package com.thy.route_calculator.service;
 
-import com.thy.route_calculator.model.Location;
+import com.thy.route_calculator.model.entity.Location;
 import java.util.List;
 
 public interface LocationService {

@@ -2,7 +2,7 @@ package com.thy.route_calculator.mapper;
 
 import com.thy.route_calculator.dto.response.RouteListingResponseDto;
 import com.thy.route_calculator.dto.response.RouteStepDto;
-import com.thy.route_calculator.model.Transportation;
+import com.thy.route_calculator.model.entity.Transportation;
 
 public class RouteListingMapper {
   public static RouteListingResponseDto toDto(

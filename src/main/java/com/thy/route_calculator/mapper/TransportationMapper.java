@@ -1,8 +1,8 @@
 package com.thy.route_calculator.mapper;
 
 import com.thy.route_calculator.dto.TransportationDto;
-import com.thy.route_calculator.model.Location;
-import com.thy.route_calculator.model.Transportation;
+import com.thy.route_calculator.model.entity.Location;
+import com.thy.route_calculator.model.entity.Transportation;
 
 public class TransportationMapper {
 

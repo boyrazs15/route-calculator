@@ -1,6 +1,6 @@
 package com.thy.route_calculator.repository;
 
-import com.thy.route_calculator.model.Transportation;
+import com.thy.route_calculator.model.entity.Transportation;
 import jakarta.persistence.LockModeType;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,7 +1,7 @@
 package com.thy.route_calculator.service.impl;
 
 import com.thy.route_calculator.exception.TransportationNotFoundException;
-import com.thy.route_calculator.model.Transportation;
+import com.thy.route_calculator.model.entity.Transportation;
 import com.thy.route_calculator.repository.TransportationRepository;
 import com.thy.route_calculator.service.TransportationService;
 import java.util.List;
