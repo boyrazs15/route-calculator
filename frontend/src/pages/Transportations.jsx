@@ -12,6 +12,14 @@ export default function Transportations() {
         operatingDays: []
     });
 
+    const [editing, setEditing] = useState(null);
+    const [editForm, setEditForm] = useState({
+        originLocationId: '',
+        destinationLocationId: '',
+        transportationType: 'FLIGHT',
+        operatingDays: []
+    });
+
     const daysOfWeek = [
         { id: 1, name: 'Monday' },
         { id: 2, name: 'Tuesday' },
@@ -62,6 +70,37 @@ export default function Transportations() {
     const handleDelete = (id) => {
         axios.delete(`http://localhost:8080/api/transportations/${id}`)
             .then(fetchTransportations);
+    };
+
+    const openEditModal = (t) => {
+        setEditing(t.id);
+        setEditForm({
+            originLocationId: t.originLocation.id,
+            destinationLocationId: t.destinationLocation.id,
+            transportationType: t.transportationType,
+            operatingDays: t.operatingDays
+        });
+    };
+
+    const handleEditChange = (e) => {
+        setEditForm({ ...editForm, [e.target.name]: e.target.value });
+    };
+
+    const toggleEditDay = (dayId) => {
+        setEditForm(prev => ({
+            ...prev,
+            operatingDays: prev.operatingDays.includes(dayId)
+                ? prev.operatingDays.filter(id => id !== dayId)
+                : [...prev.operatingDays, dayId]
+        }));
+    };
+
+    const handleUpdateSubmit = () => {
+        axios.put(`http://localhost:8080/api/transportations/${editing}`, editForm)
+            .then(() => {
+                fetchTransportations();
+                setEditing(null);
+            });
     };
 
     return (
@@ -115,10 +154,72 @@ export default function Transportations() {
                 {transportations.map(t => (
                     <li key={t.id}>
                         {t.originLocation.name} ➡ {t.destinationLocation.name} ({t.transportationType})
-                        <button className="delete-button" onClick={() => handleDelete(t.id)} style={{ marginLeft: '0.5rem' }}>Delete</button>
+                        <button className="update-button" onClick={() => openEditModal(t)} style={{ marginLeft: '0.5rem' }}>Update</button>
+                        <button className="delete-button" onClick={() => handleDelete(t.id)}>Delete</button>
                     </li>
                 ))}
             </ul>
+
+            {editing !== null && (
+                <div style={{
+                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                    backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex',
+                    alignItems: 'center', justifyContent: 'center'
+                }}>
+                    <div style={{
+                        backgroundColor: 'white', padding: '2rem', borderRadius: '10px',
+                        width: '400px'
+                    }}>
+                        <h3>Edit Transportation</h3>
+
+                        <select name="originLocationId" value={editForm.originLocationId} onChange={handleEditChange}>
+                            <option value="">Select Origin</option>
+                            {locations.map(loc => (
+                                <option key={loc.id} value={loc.id}>{loc.name}</option>
+                            ))}
+                        </select>
+
+                        <select name="destinationLocationId" value={editForm.destinationLocationId} onChange={handleEditChange}>
+                            <option value="">Select Destination</option>
+                            {locations.map(loc => (
+                                <option key={loc.id} value={loc.id}>{loc.name}</option>
+                            ))}
+                        </select>
+
+                        <select name="transportationType" value={editForm.transportationType} onChange={handleEditChange}>
+                            <option value="FLIGHT">FLIGHT</option>
+                            <option value="BUS">BUS</option>
+                            <option value="SUBWAY">SUBWAY</option>
+                            <option value="UBER">UBER</option>
+                        </select>
+
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', margin: '1rem 0' }}>
+                            {daysOfWeek.map(day => (
+                                <button
+                                    key={day.id}
+                                    type="button"
+                                    onClick={() => toggleEditDay(day.id)}
+                                    style={{
+                                        padding: '0.5rem',
+                                        border: '1px solid #aaa',
+                                        borderRadius: '6px',
+                                        backgroundColor: editForm.operatingDays.includes(day.id) ? '#007bff' : 'white',
+                                        color: editForm.operatingDays.includes(day.id) ? 'white' : 'black',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    {day.name}
+                                </button>
+                            ))}
+                        </div>
+
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
+                            <button onClick={() => setEditing(null)}>Cancel</button>
+                            <button onClick={handleUpdateSubmit} style={{ backgroundColor: '#1976d2', color: 'white', padding: '0.5rem 1rem' }}>Submit</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
