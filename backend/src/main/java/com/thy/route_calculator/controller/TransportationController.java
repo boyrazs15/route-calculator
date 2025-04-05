@@ -1,6 +1,7 @@
 package com.thy.route_calculator.controller;
 
 import com.thy.route_calculator.dto.TransportationDto;
+import com.thy.route_calculator.dto.response.TransportationResponseDto;
 import com.thy.route_calculator.mapper.TransportationMapper;
 import com.thy.route_calculator.model.entity.Location;
 import com.thy.route_calculator.model.entity.Transportation;
@@ -23,7 +24,7 @@ public class TransportationController {
   private final LocationService locationService;
 
   @PostMapping
-  public ResponseEntity<TransportationDto> createTransportation(
+  public ResponseEntity<TransportationResponseDto> createTransportation(
       @RequestBody TransportationDto dto) {
     Location origin = locationService.findById(dto.getOriginLocationId());
     Location destination = locationService.findById(dto.getDestinationLocationId());
@@ -34,20 +35,20 @@ public class TransportationController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<TransportationDto> getTransportation(@PathVariable Long id) {
+  public ResponseEntity<TransportationResponseDto> getTransportation(@PathVariable Long id) {
     Transportation transportation = transportationService.findById(id);
     return ResponseEntity.ok(TransportationMapper.toDto(transportation));
   }
 
   @GetMapping
-  public List<TransportationDto> getAllTransportations() {
+  public List<TransportationResponseDto> getAllTransportations() {
     return transportationService.findAll().stream()
         .map(TransportationMapper::toDto)
         .collect(Collectors.toList());
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<TransportationDto> updateTransportation(
+  public ResponseEntity<TransportationResponseDto> updateTransportation(
       @PathVariable Long id, @RequestBody TransportationDto dto) {
     Location origin = locationService.findById(dto.getOriginLocationId());
     Location destination = locationService.findById(dto.getDestinationLocationId());

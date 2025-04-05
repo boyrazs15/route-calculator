@@ -1,6 +1,8 @@
 package com.thy.route_calculator.mapper;
 
+import com.thy.route_calculator.dto.LocationDto;
 import com.thy.route_calculator.dto.TransportationDto;
+import com.thy.route_calculator.dto.response.TransportationResponseDto;
 import com.thy.route_calculator.model.entity.Location;
 import com.thy.route_calculator.model.entity.Transportation;
 
@@ -16,11 +18,14 @@ public class TransportationMapper {
         .build();
   }
 
-  public static TransportationDto toDto(Transportation entity) {
-    TransportationDto dto = new TransportationDto();
+  public static TransportationResponseDto toDto(Transportation entity) {
+    TransportationResponseDto dto = new TransportationResponseDto();
+    LocationDto originLocationDto = LocationMapper.toDto(entity.getOriginLocation());
+    LocationDto destinationLocationDto = LocationMapper.toDto(entity.getDestinationLocation());
     dto.setId(entity.getId());
-    dto.setOriginLocationId(entity.getOriginLocation().getId());
-    dto.setDestinationLocationId(entity.getDestinationLocation().getId());
+
+    dto.setOriginLocation(originLocationDto);
+    dto.setDestinationLocation(destinationLocationDto);
     dto.setTransportationType(entity.getTransportationType());
     dto.setOperatingDays(entity.getOperatingDays());
     return dto;

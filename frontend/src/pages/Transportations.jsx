@@ -5,8 +5,8 @@ export default function Transportations() {
   const [locations, setLocations] = useState([]);
   const [transportations, setTransportations] = useState([]);
   const [form, setForm] = useState({
-    origin: '',
-    destination: '',
+    originLocation: '',
+    destinationLocation: '',
     transportationType: 'FLIGHT'
   });
 
@@ -29,7 +29,7 @@ export default function Transportations() {
     axios.post('http://localhost:8080/api/transportations', form)
       .then(() => {
         fetchTransportations();
-        setForm({ origin: '', destination: '', transportationType: 'FLIGHT' });
+        setForm({ originLocation: '', destinationLocation: '', transportationType: 'FLIGHT' });
       });
   };
 
@@ -41,13 +41,13 @@ export default function Transportations() {
   return (
     <div style={{ padding: '1rem' }}>
       <h2>Transportations</h2>
-      <select name="origin" value={form.origin} onChange={handleChange}>
+      <select name="originLocation" value={form.originLocation} onChange={handleChange}>
         <option value="">Select Origin</option>
         {locations.map(loc => (
           <option key={loc.code} value={loc.code}>{loc.name}</option>
         ))}
       </select>
-      <select name="destination" value={form.destination} onChange={handleChange}>
+      <select name="destinationLocation" value={form.destinationLocation} onChange={handleChange}>
         <option value="">Select Destination</option>
         {locations.map(loc => (
           <option key={loc.code} value={loc.code}>{loc.name}</option>
@@ -64,7 +64,7 @@ export default function Transportations() {
       <ul>
         {transportations.map(t => (
           <li key={t.id}>
-            {t.origin} ➡ {t.destination} ({t.transportationType})
+            {t.originLocation.name} ➡ {t.destinationLocation.name} ({t.transportationType})
             <button onClick={() => handleDelete(t.id)}>Delete</button>
           </li>
         ))}
