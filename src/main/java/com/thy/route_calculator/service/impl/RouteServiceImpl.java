@@ -32,9 +32,6 @@ public class RouteServiceImpl implements RouteService {
         transportationService.findAvailableFlights(origin.getCity(), destination.getCity(), day);
 
     Map<Long, List<Transportation>> beforeTransfersMap = new HashMap<>();
-    /*
-    {key: 2, value: { origin: 1, destination: 2, type: UBER, operatingDays: [] } }
-     */
     Map<Long, List<Transportation>> afterTransfersMap = new HashMap<>();
 
     for (Transportation flight : flights) {
@@ -67,14 +64,15 @@ public class RouteServiceImpl implements RouteService {
         }
         continue;
       }
+
       if (flightDeparture.equals(origin)) {
         for (Transportation after : afterTransfers) {
           results.add(buildRoute(null, flight, after));
         }
         continue;
       }
-      for (Transportation before : beforeTransfers) {
 
+      for (Transportation before : beforeTransfers) {
         for (Transportation after : afterTransfers) {
           results.add(buildRoute(before, flight, after));
         }

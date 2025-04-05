@@ -8,6 +8,7 @@ import com.thy.route_calculator.service.TransportationService;
 import java.time.DayOfWeek;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,6 +34,7 @@ public class TransportationServiceImpl implements TransportationService {
   }
 
   @Override
+  @Cacheable(value = "transfersCache", key = "#originCity + '-' + #destinationCity + '-' + #day")
   public List<Transportation> findAvailableFlights(
       String originCity, String destinationCity, DayOfWeek day) {
     return transportationRepository.findByTypeAndOriginCityAndDestinationCityAndOperatingDay(
@@ -40,6 +42,7 @@ public class TransportationServiceImpl implements TransportationService {
   }
 
   @Override
+  @Cacheable(value = "transfersCache", key = "#originId + '-' + #destinationId + '-' + #day")
   public List<Transportation> findAvailableTransfer(
       Long originId, Long destinationId, DayOfWeek day) {
     return transportationRepository.findByTypeNotAndOriginIdAndDestinationIdAndOperatingDay(
