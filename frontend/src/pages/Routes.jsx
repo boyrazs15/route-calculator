@@ -54,25 +54,29 @@ export default function RoutesPage() {
       </div>
 
       {selectedRoute && (
-        <div className="route-details">
-          <h3>Route Details</h3>
-          {selectedRoute.beforeFlightTransfer && (
-            <>
-              <div className="route-dot"><strong>{selectedRoute.beforeFlightTransfer.origin}</strong></div>
-              <div className="route-dot">{selectedRoute.beforeFlightTransfer.transportationType}</div>
-            </>
-          )}
-          <div className="route-dot"><strong>{selectedRoute.flight.origin}</strong></div>
-          <div className="route-dot">{selectedRoute.flight.transportationType}</div>
-          <div className="route-dot"><strong>{selectedRoute.flight.destination}</strong></div>
-          {selectedRoute.afterFlightTransfer && (
-            <>
-              <div className="route-dot">{selectedRoute.afterFlightTransfer.transportationType}</div>
-              <div className="route-dot"><strong>{selectedRoute.afterFlightTransfer.destination}</strong></div>
-            </>
-          )}
-          <button onClick={() => setSelectedRoute(null)}>Close</button>
-        </div>
+          <div style={{ marginLeft: '2rem', borderLeft: '1px dotted #ccc', paddingLeft: '1rem' }}>
+            <h3>Route Details</h3>
+            <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
+              {selectedRoute.beforeFlightTransfer && (
+                  <>
+                    <li><strong>{selectedRoute.beforeFlightTransfer.origin}</strong></li>
+                    <li style={{ margin: '0.2rem 0' }}>↓ {selectedRoute.beforeFlightTransfer.transportationType}</li>
+                  </>
+              )}
+
+              <li><strong>{selectedRoute.flight.origin}</strong></li>
+              <li style={{ margin: '0.2rem 0' }}>↓ {selectedRoute.flight.transportationType}</li>
+              <li><strong>{selectedRoute.flight.destination}</strong></li>
+
+              {selectedRoute.afterFlightTransfer && (
+                  <>
+                    <li style={{ margin: '0.2rem 0' }}>↓ {selectedRoute.afterFlightTransfer.transportationType}</li>
+                    <li><strong>{selectedRoute.afterFlightTransfer.destination}</strong></li>
+                  </>
+              )}
+            </ul>
+            <button onClick={() => setSelectedRoute(null)}>Close</button>
+          </div>
       )}
     </div>
   );
