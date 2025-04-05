@@ -13,13 +13,13 @@ export default function Transportations() {
     });
 
     const daysOfWeek = [
-        { id: 1, name: 'Pazartesi' },
-        { id: 2, name: 'Salı' },
-        { id: 3, name: 'Çarşamba' },
-        { id: 4, name: 'Perşembe' },
-        { id: 5, name: 'Cuma' },
-        { id: 6, name: 'Cumartesi' },
-        { id: 7, name: 'Pazar' }
+        { id: 1, name: 'Monday' },
+        { id: 2, name: 'Tuesday' },
+        { id: 3, name: 'Wednesday' },
+        { id: 4, name: 'Thursday' },
+        { id: 5, name: 'Friday' },
+        { id: 6, name: 'Saturday' },
+        { id: 7, name: 'Sunday' }
     ];
 
     useEffect(() => {
