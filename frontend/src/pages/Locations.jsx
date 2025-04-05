@@ -29,6 +29,10 @@ export default function Locations() {
             .catch(err => console.error('Error creating location:', err));
     };
 
+    const handleUpdate = (id) => {
+
+    };
+
     const handleDelete = (id) => {
         axios.delete(`${baseUrl}/${id}`)
             .then(fetchLocations)
@@ -42,13 +46,14 @@ export default function Locations() {
             <input name="city" placeholder="City" value={form.city} onChange={handleChange} />
             <input name="country" placeholder="Country" value={form.country} onChange={handleChange} />
             <input name="locationCode" placeholder="Location Code" value={form.locationCode} onChange={handleChange} />
-            <button onClick={handleSubmit}>Create</button>
+            <button className="button" onClick={handleSubmit}>Create</button>
 
             <ul>
                 {locations.map(loc => (
                     <li key={loc.locationCode}>
                         {loc.name} ({loc.city}, {loc.country}) - {loc.locationCode}
-                        <button onClick={() => handleDelete(loc.locationCode)}>Delete</button>
+                        <button className="update-button" onClick={() => handleUpdate(loc.id)}>Update</button>
+                        <button className="delete-button" onClick={() => handleDelete(loc.id)}>Delete</button>
                     </li>
                 ))}
             </ul>

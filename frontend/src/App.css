@@ -90,3 +90,64 @@ header {
   border-radius: 50%;
   margin-right: 0.5rem;
 }
+
+.select-input {
+  padding: 0.5rem 1rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  appearance: none;
+  background-color: white;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%204%205'%3E%3Cpath%20fill='%23333'%20d='M2%200L0%202h4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 0.65rem auto;
+}
+
+.select-input:focus {
+  border-color: #007bff;
+}
+
+.button {
+  padding: 0.5rem 1.2rem;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-left: 1rem;
+  transition: background-color 0.2s;
+}
+
+.update-button {
+  padding: 0.1rem 0.8rem;
+  background-color: #FF8C00;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.8rem;
+  margin-left: 1rem;
+  transition: background-color 0.2s;
+}
+
+.delete-button {
+  padding: 0.1rem 0.8rem;
+  background-color: #B22222;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.8rem;
+  margin-left: 1rem;
+  transition: background-color 0.2s;
+}
+
+.button:hover {
+  background-color: #1976d2;
+}

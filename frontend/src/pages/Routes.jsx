@@ -28,20 +28,20 @@ export default function RoutesPage() {
       <div style={{ flex: 1 }}>
         <h2>Available Routes</h2>
         <div>
-          <select onChange={(e) => setOrigin(e.target.value)} defaultValue="">
+          <select className="select-input" onChange={(e) => setOrigin(e.target.value)} defaultValue="">
             <option value="">Select Origin</option>
             {locations.map((loc) => (
                 <option key={loc.id} value={loc.id}>{loc.name}</option>
             ))}
           </select>
-          <select onChange={(e) => setDestination(e.target.value)} defaultValue="">
+          <select className="select-input" onChange={(e) => setDestination(e.target.value)} defaultValue="">
             <option value="">Select Destination</option>
             {locations.map((loc) => (
                 <option key={loc.id} value={loc.id}>{loc.name}</option>
             ))}
           </select>
-          <input type="date" onChange={(e) => setDate(e.target.value)} />
-          <button onClick={handleSearch}>Search</button>
+          <input className="select-input" type="date" onChange={(e) => setDate(e.target.value)} />
+          <button className="button" onClick={handleSearch}>Search 🔍</button>
         </div>
 
         <ul style={{ marginTop: '1rem', padding: 0 }} className="route-list">

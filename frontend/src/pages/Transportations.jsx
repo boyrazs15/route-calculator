@@ -68,21 +68,21 @@ export default function Transportations() {
         <div style={{ padding: '1rem' }}>
             <h2>Transportations</h2>
 
-            <select name="originLocationId" value={form.originLocationId} onChange={handleChange}>
+            <select className="select-input" name="originLocationId" value={form.originLocationId} onChange={handleChange}>
                 <option value="">Select Origin</option>
                 {locations.map(loc => (
                     <option key={loc.id} value={loc.id}>{loc.name}</option>
                 ))}
             </select>
 
-            <select name="destinationLocationId" value={form.destinationLocationId} onChange={handleChange}>
+            <select className="select-input" name="destinationLocationId" value={form.destinationLocationId} onChange={handleChange}>
                 <option value="">Select Destination</option>
                 {locations.map(loc => (
                     <option key={loc.id} value={loc.id}>{loc.name}</option>
                 ))}
             </select>
 
-            <select name="transportationType" value={form.transportationType} onChange={handleChange}>
+            <select className="select-input" name="transportationType" value={form.transportationType} onChange={handleChange}>
                 <option value="FLIGHT">FLIGHT</option>
                 <option value="BUS">BUS</option>
                 <option value="SUBWAY">SUBWAY</option>
@@ -109,13 +109,13 @@ export default function Transportations() {
                 ))}
             </div>
 
-            <button onClick={handleSubmit}>Create</button>
+            <button className="button" onClick={handleSubmit}>Create</button>
 
             <ul style={{ marginTop: '2rem' }}>
                 {transportations.map(t => (
                     <li key={t.id}>
                         {t.originLocation.name} ➡ {t.destinationLocation.name} ({t.transportationType})
-                        <button onClick={() => handleDelete(t.id)} style={{ marginLeft: '0.5rem' }}>Delete</button>
+                        <button className="delete-button" onClick={() => handleDelete(t.id)} style={{ marginLeft: '0.5rem' }}>Delete</button>
                     </li>
                 ))}
             </ul>
