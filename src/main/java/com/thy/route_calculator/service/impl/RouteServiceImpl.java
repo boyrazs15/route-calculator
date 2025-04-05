@@ -32,34 +32,52 @@ public class RouteServiceImpl implements RouteService {
         transportationService.findAvailableFlights(origin.getCity(), destination.getCity(), day);
 
     Map<Long, List<Transportation>> beforeTransfersMap = new HashMap<>();
+    /*
+    {key: 2, value: { origin: 1, destination: 2, type: UBER, operatingDays: [] } }
+     */
     Map<Long, List<Transportation>> afterTransfersMap = new HashMap<>();
 
     for (Transportation flight : flights) {
       Location flightDeparture = flight.getOriginLocation();
       Location flightArrival = flight.getDestinationLocation();
 
-      List<Transportation> beforeTransfers =
-          beforeTransfersMap.computeIfAbsent(
-              flightDeparture.getId(),
-              k -> transportationService.findAvailableTransfer(origin.getId(), k, day));
+      if (flightDeparture.equals(origin) && flightArrival.equals(destination)) {
+        results.add(buildRoute(null, flight, null));
+        continue;
+      }
 
-      List<Transportation> afterTransfers =
-          afterTransfersMap.computeIfAbsent(
-              flightArrival.getId(),
-              k -> transportationService.findAvailableTransfer(k, destination.getId(), day));
+      List<Transportation> beforeTransfers = new ArrayList<>();
+      List<Transportation> afterTransfers = new ArrayList<>();
+      if (!flightDeparture.equals(origin)) {
+        beforeTransfers =
+            beforeTransfersMap.computeIfAbsent(
+                flightDeparture.getId(),
+                k -> transportationService.findAvailableTransfer(origin.getId(), k, day));
+      }
+      if (!flightArrival.equals(destination)) {
+        afterTransfers =
+            afterTransfersMap.computeIfAbsent(
+                flightArrival.getId(),
+                k -> transportationService.findAvailableTransfer(k, destination.getId(), day));
+      }
 
-      results.add(buildRoute(null, flight, null));
-
+      if (flightArrival.equals(destination)) {
+        for (Transportation before : beforeTransfers) {
+          results.add(buildRoute(before, flight, null));
+        }
+        continue;
+      }
+      if (flightDeparture.equals(origin)) {
+        for (Transportation after : afterTransfers) {
+          results.add(buildRoute(null, flight, after));
+        }
+        continue;
+      }
       for (Transportation before : beforeTransfers) {
-        results.add(buildRoute(before, flight, null));
 
         for (Transportation after : afterTransfers) {
           results.add(buildRoute(before, flight, after));
         }
-      }
-
-      for (Transportation after : afterTransfers) {
-        results.add(buildRoute(null, flight, after));
       }
     }
 
