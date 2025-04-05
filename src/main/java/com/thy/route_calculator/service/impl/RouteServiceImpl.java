@@ -10,8 +10,10 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RouteServiceImpl implements RouteService {
@@ -31,6 +33,8 @@ public class RouteServiceImpl implements RouteService {
     List<Transportation> flights =
         transportationService.findAvailableFlights(origin.getCity(), destination.getCity(), day);
 
+    log.debug("Available flight number: {}", flights.size());
+
     Map<Long, List<Transportation>> beforeTransfersMap = new HashMap<>();
     Map<Long, List<Transportation>> afterTransfersMap = new HashMap<>();
 
@@ -39,6 +43,7 @@ public class RouteServiceImpl implements RouteService {
       Location flightArrival = flight.getDestinationLocation();
 
       if (flightDeparture.equals(origin) && flightArrival.equals(destination)) {
+        log.debug("There is no need for a transfer before or after flight");
         results.add(buildRoute(null, flight, null));
         continue;
       }
@@ -46,12 +51,14 @@ public class RouteServiceImpl implements RouteService {
       List<Transportation> beforeTransfers = new ArrayList<>();
       List<Transportation> afterTransfers = new ArrayList<>();
       if (!flightDeparture.equals(origin)) {
+        log.debug("Finding available transfers for before flight");
         beforeTransfers =
             beforeTransfersMap.computeIfAbsent(
                 flightDeparture.getId(),
                 k -> transportationService.findAvailableTransfer(origin.getId(), k, day));
       }
       if (!flightArrival.equals(destination)) {
+        log.debug("Finding available transfers for after flight");
         afterTransfers =
             afterTransfersMap.computeIfAbsent(
                 flightArrival.getId(),
@@ -59,6 +66,7 @@ public class RouteServiceImpl implements RouteService {
       }
 
       if (flightArrival.equals(destination)) {
+        log.debug("There is no need for a transfer after the flight");
         for (Transportation before : beforeTransfers) {
           results.add(buildRoute(before, flight, null));
         }
@@ -66,6 +74,7 @@ public class RouteServiceImpl implements RouteService {
       }
 
       if (flightDeparture.equals(origin)) {
+        log.debug("There is no need for a transfer before the flight");
         for (Transportation after : afterTransfers) {
           results.add(buildRoute(null, flight, after));
         }
@@ -74,6 +83,7 @@ public class RouteServiceImpl implements RouteService {
 
       for (Transportation before : beforeTransfers) {
         for (Transportation after : afterTransfers) {
+          log.debug("Building a route with before and after flight transfers");
           results.add(buildRoute(before, flight, after));
         }
       }
