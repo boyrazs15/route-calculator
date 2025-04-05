@@ -11,7 +11,7 @@ import lombok.*;
 @Builder
 public class RouteResult {
 
-  private Optional<Transportation> beforeFlightTransportation;
+  private Optional<Transportation> beforeFlightTransfer;
   private Transportation flight;
-  private Optional<Transportation> afterFlightTransportation;
+  private Optional<Transportation> afterFlightTransfer;
 }

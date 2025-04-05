@@ -6,12 +6,11 @@ import com.thy.route_calculator.model.entity.Transportation;
 import com.thy.route_calculator.service.LocationService;
 import com.thy.route_calculator.service.RouteService;
 import com.thy.route_calculator.service.TransportationService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -21,14 +20,16 @@ public class RouteServiceImpl implements RouteService {
   private final TransportationService transportationService;
 
   @Override
-  public List<RouteResult> listRoutes(Long originLocationId, Long destinationLocationId, LocalDateTime date) {
+  public List<RouteResult> listRoutes(
+      Long originLocationId, Long destinationLocationId, LocalDateTime date) {
     DayOfWeek day = date.getDayOfWeek();
 
     Location origin = locationService.findById(originLocationId);
     Location destination = locationService.findById(destinationLocationId);
 
     List<RouteResult> results = new ArrayList<>();
-    List<Transportation> flights = transportationService.findAvailableFlights(origin.getCity(), destination.getCity(), day);
+    List<Transportation> flights =
+        transportationService.findAvailableFlights(origin.getCity(), destination.getCity(), day);
 
     Map<Long, List<Transportation>> beforeTransfersMap = new HashMap<>();
     Map<Long, List<Transportation>> afterTransfersMap = new HashMap<>();
@@ -37,15 +38,15 @@ public class RouteServiceImpl implements RouteService {
       Location flightDeparture = flight.getOriginLocation();
       Location flightArrival = flight.getDestinationLocation();
 
-      List<Transportation> beforeTransfers = beforeTransfersMap.computeIfAbsent(
+      List<Transportation> beforeTransfers =
+          beforeTransfersMap.computeIfAbsent(
               flightDeparture.getId(),
-              k -> transportationService.findAvailableTransfer(origin.getId(), k, day)
-      );
+              k -> transportationService.findAvailableTransfer(origin.getId(), k, day));
 
-      List<Transportation> afterTransfers = afterTransfersMap.computeIfAbsent(
+      List<Transportation> afterTransfers =
+          afterTransfersMap.computeIfAbsent(
               flightArrival.getId(),
-              k -> transportationService.findAvailableTransfer(k, destination.getId(), day)
-      );
+              k -> transportationService.findAvailableTransfer(k, destination.getId(), day));
 
       results.add(buildRoute(null, flight, null));
 
@@ -65,12 +66,12 @@ public class RouteServiceImpl implements RouteService {
     return results;
   }
 
-  private RouteResult buildRoute(Transportation before, Transportation flight, Transportation after) {
+  private RouteResult buildRoute(
+      Transportation before, Transportation flight, Transportation after) {
     return RouteResult.builder()
-            .beforeFlightTransportation(Optional.ofNullable(before))
-            .flight(flight)
-            .afterFlightTransportation(Optional.ofNullable(after))
-            .build();
+        .beforeFlightTransfer(Optional.ofNullable(before))
+        .flight(flight)
+        .afterFlightTransfer(Optional.ofNullable(after))
+        .build();
   }
-
 }

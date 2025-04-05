@@ -9,22 +9,18 @@ import com.thy.route_calculator.service.TransportationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/transportations")
 @Tag(name = "Transportation", description = "Endpoints for managing transportations")
+@RequiredArgsConstructor
 public class TransportationController {
 
   private final TransportationService transportationService;
   private final LocationService locationService;
-
-  public TransportationController(
-      TransportationService transportationService, LocationService locationService) {
-    this.transportationService = transportationService;
-    this.locationService = locationService;
-  }
 
   @PostMapping
   public ResponseEntity<TransportationDto> createTransportation(

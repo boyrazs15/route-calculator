@@ -5,7 +5,6 @@ import com.thy.route_calculator.model.entity.Transportation;
 import com.thy.route_calculator.model.enums.TransportationType;
 import com.thy.route_calculator.repository.TransportationRepository;
 import com.thy.route_calculator.service.TransportationService;
-
 import java.time.DayOfWeek;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,17 +33,17 @@ public class TransportationServiceImpl implements TransportationService {
   }
 
   @Override
-  public List<Transportation> findAvailableFlights(String originCity, String destinationCity, DayOfWeek day) {
+  public List<Transportation> findAvailableFlights(
+      String originCity, String destinationCity, DayOfWeek day) {
     return transportationRepository.findByTypeAndOriginCityAndDestinationCityAndOperatingDay(
-            TransportationType.FLIGHT, originCity, destinationCity, day.getValue()
-    );
+        TransportationType.FLIGHT, originCity, destinationCity, day.getValue());
   }
 
   @Override
-  public List<Transportation> findAvailableTransfer(Long originId, Long destinationId, DayOfWeek day) {
+  public List<Transportation> findAvailableTransfer(
+      Long originId, Long destinationId, DayOfWeek day) {
     return transportationRepository.findByTypeNotAndOriginIdAndDestinationIdAndOperatingDay(
-            TransportationType.FLIGHT, originId, destinationId, day.getValue()
-    );
+        TransportationType.FLIGHT, originId, destinationId, day.getValue());
   }
 
   @Override

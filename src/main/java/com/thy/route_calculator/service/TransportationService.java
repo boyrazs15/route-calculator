@@ -1,7 +1,6 @@
 package com.thy.route_calculator.service;
 
 import com.thy.route_calculator.model.entity.Transportation;
-
 import java.time.DayOfWeek;
 import java.util.List;
 

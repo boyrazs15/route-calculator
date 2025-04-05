@@ -35,9 +35,8 @@ public class Transportation extends BaseEntity {
 
   @ElementCollection
   @CollectionTable(
-          name = "transportation_operating_days",
-          joinColumns = @JoinColumn(name = "transportation_id")
-  )
+      name = "transportation_operating_days",
+      joinColumns = @JoinColumn(name = "transportation_id"))
   @Column(name = "day_of_week")
   private List<Integer> operatingDays;
 }
