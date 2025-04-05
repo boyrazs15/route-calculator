@@ -18,12 +18,12 @@ import org.hibernate.annotations.Where;
 @SQLDelete(sql = "UPDATE location SET deleted = true WHERE id = ? AND version = ?")
 @Where(clause = "deleted = false")
 public class Transportation extends BaseEntity {
-  @ManyToOne(optional = false, fetch = FetchType.LAZY)
+  @ManyToOne(optional = false, fetch = FetchType.EAGER)
   @NotNull
   @JoinColumn(name = "origin_location_id", nullable = false)
   private Location originLocation;
 
-  @ManyToOne(optional = false, fetch = FetchType.LAZY)
+  @ManyToOne(optional = false, fetch = FetchType.EAGER)
   @NotNull
   @JoinColumn(name = "destination_location_id", nullable = false)
   private Location destinationLocation;

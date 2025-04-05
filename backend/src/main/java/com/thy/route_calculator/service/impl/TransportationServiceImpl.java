@@ -7,7 +7,6 @@ import com.thy.route_calculator.repository.TransportationRepository;
 import com.thy.route_calculator.service.TransportationService;
 import java.time.DayOfWeek;
 import java.util.List;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -42,7 +41,8 @@ public class TransportationServiceImpl implements TransportationService {
   @Cacheable(value = "transfersCache", key = "#originCity + '-' + #destinationCity + '-' + #day")
   public List<Transportation> findAvailableFlights(
       String originCity, String destinationCity, DayOfWeek day) {
-    log.debug("Finding available flights between {} and {} for {}", originCity, destinationCity, day);
+    log.debug(
+        "Finding available flights between {} and {} for {}", originCity, destinationCity, day);
     return transportationRepository.findByTypeAndOriginCityAndDestinationCityAndOperatingDay(
         TransportationType.FLIGHT, originCity, destinationCity, day.getValue());
   }

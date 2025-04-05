@@ -5,7 +5,6 @@ import com.thy.route_calculator.model.entity.Location;
 import com.thy.route_calculator.repository.LocationRepository;
 import com.thy.route_calculator.service.LocationService;
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

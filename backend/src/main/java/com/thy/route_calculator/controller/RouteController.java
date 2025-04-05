@@ -1,15 +1,17 @@
 package com.thy.route_calculator.controller;
 
-import com.thy.route_calculator.dto.RouteListingDto;
 import com.thy.route_calculator.dto.response.RouteListingResponseDto;
 import com.thy.route_calculator.mapper.RouteListingMapper;
 import com.thy.route_calculator.model.RouteResult;
 import com.thy.route_calculator.service.RouteService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,15 +22,13 @@ import org.springframework.web.bind.annotation.*;
 public class RouteController {
   private final RouteService routeService;
 
-  @PostMapping
+  @GetMapping
   public ResponseEntity<List<RouteListingResponseDto>> listRoutes(
-      @RequestBody @Valid RouteListingDto routeListingDto) {
-
+      @RequestParam Long originLocationId,
+      @RequestParam Long destinationLocationId,
+      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
     List<RouteResult> routeResults =
-        routeService.listRoutes(
-            routeListingDto.getOriginLocationId(),
-            routeListingDto.getDestinationLocationId(),
-            routeListingDto.getDate());
+        routeService.listRoutes(originLocationId, destinationLocationId, date.atStartOfDay());
     return ResponseEntity.ok(
         routeResults.stream().map(RouteListingMapper::toDto).collect(Collectors.toList()));
   }
