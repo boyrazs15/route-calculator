@@ -6,98 +6,71 @@ import com.thy.route_calculator.model.entity.Transportation;
 import com.thy.route_calculator.service.LocationService;
 import com.thy.route_calculator.service.RouteService;
 import com.thy.route_calculator.service.TransportationService;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.util.*;
+
 @Service
+@RequiredArgsConstructor
 public class RouteServiceImpl implements RouteService {
 
   private final LocationService locationService;
   private final TransportationService transportationService;
 
-  @Autowired
-  public RouteServiceImpl(
-      LocationService locationService, TransportationService transportationService) {
-    this.locationService = locationService;
-    this.transportationService = transportationService;
-  }
-
   @Override
-  public List<RouteResult> listRoutes(
-      Long originLocationId, Long destinationLocationId, LocalDateTime date) {
-    List<RouteResult> routes = new ArrayList<>();
+  public List<RouteResult> listRoutes(Long originLocationId, Long destinationLocationId, LocalDateTime date) {
+    DayOfWeek day = date.getDayOfWeek();
 
     Location origin = locationService.findById(originLocationId);
     Location destination = locationService.findById(destinationLocationId);
 
-    List<Optional<Transportation>> flightOptions =
-        transportationService.findAvailableFlightTransportations(
-            origin.getCity(), destination.getCity(), date);
+    List<RouteResult> results = new ArrayList<>();
+    List<Transportation> flights = transportationService.findAvailableFlights(origin.getCity(), destination.getCity(), day);
 
-    for (Optional<Transportation> optionalFlight : flightOptions) {
-      if (optionalFlight.isEmpty()) continue;
-      Transportation flight = optionalFlight.get();
+    Map<Long, List<Transportation>> beforeTransfersMap = new HashMap<>();
+    Map<Long, List<Transportation>> afterTransfersMap = new HashMap<>();
 
-      routes.add(
-          RouteResult.builder()
-              .flight(flight)
-              .beforeFlightTransportation(Optional.empty())
-              .afterFlightTransportation(Optional.empty())
-              .build());
+    for (Transportation flight : flights) {
+      Location flightDeparture = flight.getOriginLocation();
+      Location flightArrival = flight.getDestinationLocation();
 
-      List<Optional<Transportation>> beforeOptions =
-          transportationService.findAvailableBeforeFlightTransportations(
-              originLocationId, flight, date);
+      List<Transportation> beforeTransfers = beforeTransfersMap.computeIfAbsent(
+              flightDeparture.getId(),
+              k -> transportationService.findAvailableTransfer(origin.getId(), k, day)
+      );
 
-      for (Optional<Transportation> optionalBefore : beforeOptions) {
-        if (optionalBefore.isEmpty()) continue;
-        Transportation before = optionalBefore.get();
+      List<Transportation> afterTransfers = afterTransfersMap.computeIfAbsent(
+              flightArrival.getId(),
+              k -> transportationService.findAvailableTransfer(k, destination.getId(), day)
+      );
 
-        routes.add(
-            RouteResult.builder()
-                .beforeFlightTransportation(Optional.of(before))
-                .flight(flight)
-                .afterFlightTransportation(Optional.empty())
-                .build());
+      results.add(buildRoute(null, flight, null));
 
-        List<Optional<Transportation>> afterOptions =
-            transportationService.findAvailableAfterFlightTransportations(
-                flight, destinationLocationId, date);
+      for (Transportation before : beforeTransfers) {
+        results.add(buildRoute(before, flight, null));
 
-        for (Optional<Transportation> optionalAfter : afterOptions) {
-          if (optionalAfter.isEmpty()) continue;
-          Transportation after = optionalAfter.get();
-
-          routes.add(
-              RouteResult.builder()
-                  .beforeFlightTransportation(Optional.of(before))
-                  .flight(flight)
-                  .afterFlightTransportation(Optional.of(after))
-                  .build());
+        for (Transportation after : afterTransfers) {
+          results.add(buildRoute(before, flight, after));
         }
       }
 
-      List<Optional<Transportation>> afterOptions =
-          transportationService.findAvailableAfterFlightTransportations(
-              flight, destinationLocationId, date);
-
-      for (Optional<Transportation> optionalAfter : afterOptions) {
-        if (optionalAfter.isEmpty()) continue;
-        Transportation after = optionalAfter.get();
-
-        routes.add(
-            RouteResult.builder()
-                .beforeFlightTransportation(Optional.empty())
-                .flight(flight)
-                .afterFlightTransportation(Optional.of(after))
-                .build());
+      for (Transportation after : afterTransfers) {
+        results.add(buildRoute(null, flight, after));
       }
     }
 
-    return routes;
+    return results;
   }
+
+  private RouteResult buildRoute(Transportation before, Transportation flight, Transportation after) {
+    return RouteResult.builder()
+            .beforeFlightTransportation(Optional.ofNullable(before))
+            .flight(flight)
+            .afterFlightTransportation(Optional.ofNullable(after))
+            .build();
+  }
+
 }

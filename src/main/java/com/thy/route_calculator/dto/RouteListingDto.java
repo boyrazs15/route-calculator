@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class RouteListingDto {
-  private String originLocationId;
-  private String destinationLocationId;
+  private Long originLocationId;
+  private Long destinationLocationId;
   private LocalDateTime date;
 }

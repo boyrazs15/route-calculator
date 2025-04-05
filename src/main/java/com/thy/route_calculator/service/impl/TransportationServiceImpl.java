@@ -2,11 +2,12 @@ package com.thy.route_calculator.service.impl;
 
 import com.thy.route_calculator.exception.TransportationNotFoundException;
 import com.thy.route_calculator.model.entity.Transportation;
+import com.thy.route_calculator.model.enums.TransportationType;
 import com.thy.route_calculator.repository.TransportationRepository;
 import com.thy.route_calculator.service.TransportationService;
-import java.time.LocalDateTime;
+
+import java.time.DayOfWeek;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,21 +34,17 @@ public class TransportationServiceImpl implements TransportationService {
   }
 
   @Override
-  public List<Optional<Transportation>> findAvailableFlightTransportations(
-      String originLocationCity, String destinationLocationCity, LocalDateTime date) {
-    return List.of();
+  public List<Transportation> findAvailableFlights(String originCity, String destinationCity, DayOfWeek day) {
+    return transportationRepository.findByTypeAndOriginCityAndDestinationCityAndOperatingDay(
+            TransportationType.FLIGHT, originCity, destinationCity, day.getValue()
+    );
   }
 
   @Override
-  public List<Optional<Transportation>> findAvailableBeforeFlightTransportations(
-      Long originLocationId, Transportation flightTransportation, LocalDateTime date) {
-    return List.of();
-  }
-
-  @Override
-  public List<Optional<Transportation>> findAvailableAfterFlightTransportations(
-      Transportation flightTransportation, Long destinationLocationId, LocalDateTime date) {
-    return List.of();
+  public List<Transportation> findAvailableTransfer(Long originId, Long destinationId, DayOfWeek day) {
+    return transportationRepository.findByTypeNotAndOriginIdAndDestinationIdAndOperatingDay(
+            TransportationType.FLIGHT, originId, destinationId, day.getValue()
+    );
   }
 
   @Override

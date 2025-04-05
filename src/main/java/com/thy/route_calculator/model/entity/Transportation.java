@@ -5,10 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import lombok.*;
-import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "transportation")
@@ -35,7 +33,11 @@ public class Transportation extends BaseEntity {
   @Column(name = "transportation_type", nullable = false)
   private TransportationType transportationType;
 
-  @JdbcTypeCode(SqlTypes.ARRAY)
-  @Column(name = "operating_days", columnDefinition = "integer[]")
+  @ElementCollection
+  @CollectionTable(
+          name = "transportation_operating_days",
+          joinColumns = @JoinColumn(name = "transportation_id")
+  )
+  @Column(name = "day_of_week")
   private List<Integer> operatingDays;
 }
