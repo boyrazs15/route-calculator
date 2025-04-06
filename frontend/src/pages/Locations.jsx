@@ -80,6 +80,7 @@ export default function Locations() {
                         {loc.name} ({loc.city}, {loc.country}) - {loc.locationCode}
                         <button className="update-button" onClick={() => openEditModal(loc)}>Update</button>
                         <button className="delete-button" onClick={() => handleDelete(loc.id)}>Delete</button>
+                        <br/><br/>
                     </li>
                 ))}
             </ul>

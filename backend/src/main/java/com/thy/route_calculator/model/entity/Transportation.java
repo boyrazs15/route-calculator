@@ -9,7 +9,11 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Entity
-@Table(name = "transportation")
+@Table(
+    name = "transportation",
+    uniqueConstraints =
+        @UniqueConstraint(
+            columnNames = {"origin_location_id", "destination_location_id", "transportation_type"}))
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Builder

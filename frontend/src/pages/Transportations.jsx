@@ -156,6 +156,7 @@ export default function Transportations() {
                         {t.originLocation.name} ➡ {t.destinationLocation.name} ({t.transportationType})
                         <button className="update-button" onClick={() => openEditModal(t)} style={{ marginLeft: '0.5rem' }}>Update</button>
                         <button className="delete-button" onClick={() => handleDelete(t.id)}>Delete</button>
+                        <br/><br/>
                     </li>
                 ))}
             </ul>

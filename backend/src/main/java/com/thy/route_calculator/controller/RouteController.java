@@ -5,9 +5,7 @@ import com.thy.route_calculator.mapper.RouteListingMapper;
 import com.thy.route_calculator.model.RouteResult;
 import com.thy.route_calculator.service.RouteService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
