@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { getLocations, createLocation, updateLocation, deleteLocation } from '../api/locations';
 
 export default function Locations() {
     const [locations, setLocations] = useState([]);
@@ -7,14 +7,12 @@ export default function Locations() {
     const [editing, setEditing] = useState(null);
     const [editForm, setEditForm] = useState({ name: '', city: '', country: '', locationCode: '' });
 
-    const baseUrl = 'http://localhost:8080/api/locations';
-
     useEffect(() => {
         fetchLocations();
     }, []);
 
     const fetchLocations = () => {
-        axios.get(baseUrl)
+        getLocations()
             .then(res => setLocations(res.data))
             .catch(err => console.error('Error fetching locations:', err));
     };
@@ -24,7 +22,7 @@ export default function Locations() {
     };
 
     const handleSubmit = () => {
-        axios.post(baseUrl, form)
+        createLocation(form)
             .then(() => {
                 fetchLocations();
                 setForm({ name: '', city: '', country: '', locationCode: '' });
@@ -47,7 +45,7 @@ export default function Locations() {
     };
 
     const handleUpdateSubmit = () => {
-        axios.put(`${baseUrl}/${editing}`, editForm)
+        updateLocation(editing, editForm)
             .then(() => {
                 fetchLocations();
                 setEditing(null);
@@ -56,7 +54,7 @@ export default function Locations() {
     };
 
     const handleDelete = (id) => {
-        axios.delete(`${baseUrl}/${id}`)
+        deleteLocation(id)
             .then(fetchLocations)
             .catch(err => console.error('Error deleting location:', err));
     };

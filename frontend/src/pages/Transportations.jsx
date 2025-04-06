@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { getLocations} from '../api/locations';
+import { getTransportations, createTransportation, updateTransportation, deleteTransportation } from '../api/transportations';
 
 export default function Transportations() {
     const [locations, setLocations] = useState([]);
@@ -31,13 +32,13 @@ export default function Transportations() {
     ];
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/locations')
+        getLocations()
             .then(res => setLocations(res.data));
         fetchTransportations();
     }, []);
 
     const fetchTransportations = () => {
-        axios.get('http://localhost:8080/api/transportations')
+        getTransportations()
             .then(res => setTransportations(res.data));
     };
 
@@ -55,7 +56,7 @@ export default function Transportations() {
     };
 
     const handleSubmit = () => {
-        axios.post('http://localhost:8080/api/transportations', form)
+        createTransportation(form)
             .then(() => {
                 fetchTransportations();
                 setForm({
@@ -68,7 +69,7 @@ export default function Transportations() {
     };
 
     const handleDelete = (id) => {
-        axios.delete(`http://localhost:8080/api/transportations/${id}`)
+        deleteTransportation(id)
             .then(fetchTransportations);
     };
 
@@ -96,7 +97,7 @@ export default function Transportations() {
     };
 
     const handleUpdateSubmit = () => {
-        axios.put(`http://localhost:8080/api/transportations/${editing}`, editForm)
+        updateTransportation(editing, editForm)
             .then(() => {
                 fetchTransportations();
                 setEditing(null);

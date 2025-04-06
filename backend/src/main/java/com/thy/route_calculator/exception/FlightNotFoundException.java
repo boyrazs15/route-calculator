@@ -7,7 +7,7 @@ public class FlightNotFoundException extends ApiException {
     super(
         "Flight not found with origin location id: "
             + originId
-            + "and destination location id: "
+            + " and destination location id: "
             + destinationId,
         ErrorCode.FLIGHT_NOT_FOUND,
         HttpStatus.NOT_FOUND);

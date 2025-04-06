@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { listRoutes } from '../api/routes';
+import { getLocations } from '../api/locations';
 
 export default function RoutesPage() {
   const [locations, setLocations] = useState([]);
@@ -10,7 +11,7 @@ export default function RoutesPage() {
   const [selectedRoute, setSelectedRoute] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/locations')
+    getLocations()
       .then(res => setLocations(res.data))
       .catch(err => console.error('Error fetching locations:', err));
   }, []);
@@ -18,7 +19,7 @@ export default function RoutesPage() {
   const handleSearch = () => {
     if (!origin || !destination || !date) return;
 
-    axios.get(`http://localhost:8080/api/routes?originLocationId=${origin}&destinationLocationId=${destination}&date=${date}`)
+    listRoutes(origin, destination, date)
       .then(res => setRoutes(res.data))
       .catch(err => console.error('Error fetching routes:', err));
   };
