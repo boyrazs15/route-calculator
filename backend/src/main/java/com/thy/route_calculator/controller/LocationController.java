@@ -5,6 +5,7 @@ import com.thy.route_calculator.mapper.LocationMapper;
 import com.thy.route_calculator.model.entity.Location;
 import com.thy.route_calculator.service.LocationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class LocationController {
   }
 
   @PostMapping
-  public ResponseEntity<LocationDto> createLocation(@RequestBody LocationDto dto) {
+  public ResponseEntity<LocationDto> createLocation(@Valid @RequestBody LocationDto dto) {
     Location saved = locationService.save(LocationMapper.toEntity(dto));
     return ResponseEntity.ok(LocationMapper.toDto(saved));
   }
@@ -44,7 +45,7 @@ public class LocationController {
 
   @PutMapping("/{id}")
   public ResponseEntity<LocationDto> updateLocation(
-      @PathVariable Long id, @RequestBody LocationDto dto) {
+      @PathVariable Long id, @Valid @RequestBody LocationDto dto) {
     Location updated = locationService.update(id, LocationMapper.toEntity(dto));
     return ResponseEntity.ok(LocationMapper.toDto(updated));
   }

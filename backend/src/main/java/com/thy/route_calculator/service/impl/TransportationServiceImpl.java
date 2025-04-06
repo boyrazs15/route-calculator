@@ -2,6 +2,7 @@ package com.thy.route_calculator.service.impl;
 
 import com.thy.route_calculator.exception.TransportationAlreadyExistsException;
 import com.thy.route_calculator.exception.TransportationNotFoundException;
+import com.thy.route_calculator.exception.TransportationNotProcessableException;
 import com.thy.route_calculator.model.entity.Transportation;
 import com.thy.route_calculator.model.enums.TransportationType;
 import com.thy.route_calculator.repository.TransportationRepository;
@@ -28,6 +29,16 @@ public class TransportationServiceImpl implements TransportationService {
 
   @Override
   public Transportation save(Transportation transportation) {
+    if (transportation
+        .getOriginLocation()
+        .getId()
+        .equals(transportation.getDestinationLocation().getId())) {
+      log.error(
+          "Transportation origin and destination cannot be the same, locId: {}",
+          transportation.getOriginLocation().getId());
+      throw new TransportationNotProcessableException(transportation.getOriginLocation().getId());
+    }
+
     log.debug("Saving transportation: {}", transportation);
     try {
       return transportationRepository.save(transportation);
@@ -52,7 +63,7 @@ public class TransportationServiceImpl implements TransportationService {
         .orElseThrow(
             () -> {
               log.error("No transportation found with id: {}", id);
-                return new TransportationNotFoundException(id);
+              return new TransportationNotFoundException(id);
             });
   }
 

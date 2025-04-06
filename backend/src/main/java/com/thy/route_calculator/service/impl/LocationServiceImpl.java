@@ -38,7 +38,7 @@ public class LocationServiceImpl implements LocationService {
         .orElseThrow(
             () -> {
               log.error("Unable to find location by id: {}", id);
-                return new LocationNotFoundException(id);
+              return new LocationNotFoundException(id);
             });
   }
 
