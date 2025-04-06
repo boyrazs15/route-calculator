@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getLocations, createLocation, updateLocation, deleteLocation } from '../api/locations';
+import { ToastContainer } from 'react-toastify';
 
 export default function Locations() {
     const [locations, setLocations] = useState([]);
@@ -106,6 +107,8 @@ export default function Locations() {
                     </div>
                 </div>
             )}
+
+            <ToastContainer position="bottom-right" autoClose={3000} />
         </div>
     );
 }

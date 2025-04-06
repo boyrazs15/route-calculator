@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { listRoutes } from '../api/routes';
 import { getLocations } from '../api/locations';
+import { ToastContainer } from 'react-toastify';
 
 export default function RoutesPage() {
   const [locations, setLocations] = useState([]);
@@ -79,6 +80,8 @@ export default function RoutesPage() {
             <button onClick={() => setSelectedRoute(null)}>Close</button>
           </div>
       )}
+
+      <ToastContainer position="bottom-right" autoClose={3000} />
     </div>
   );
 }

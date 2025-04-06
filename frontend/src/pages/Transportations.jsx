@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getLocations} from '../api/locations';
 import { getTransportations, createTransportation, updateTransportation, deleteTransportation } from '../api/transportations';
+import { ToastContainer } from 'react-toastify';
 
 export default function Transportations() {
     const [locations, setLocations] = useState([]);
@@ -222,6 +223,8 @@ export default function Transportations() {
                     </div>
                 </div>
             )}
+
+            <ToastContainer position="bottom-right" autoClose={3000} />
         </div>
     );
 }
