@@ -1,5 +1,6 @@
 package com.thy.route_calculator.service.impl;
 
+import com.thy.route_calculator.exception.TransportationAlreadyExistsException;
 import com.thy.route_calculator.exception.TransportationNotFoundException;
 import com.thy.route_calculator.model.entity.Transportation;
 import com.thy.route_calculator.model.enums.TransportationType;
@@ -10,6 +11,8 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -26,7 +29,19 @@ public class TransportationServiceImpl implements TransportationService {
   @Override
   public Transportation save(Transportation transportation) {
     log.debug("Saving transportation: {}", transportation);
-    return transportationRepository.save(transportation);
+    try {
+      return transportationRepository.save(transportation);
+    } catch (DataIntegrityViolationException e) {
+      log.error(
+          "Transportation already exists with the same originLocationId: {}, destinationLocationId: {}, transportationType: {}",
+          transportation.getOriginLocation().getId(),
+          transportation.getDestinationLocation().getId(),
+          transportation.getTransportationType());
+      throw new TransportationAlreadyExistsException(
+          transportation.getOriginLocation(),
+          transportation.getDestinationLocation(),
+          transportation.getTransportationType());
+    }
   }
 
   @Override
@@ -34,7 +49,11 @@ public class TransportationServiceImpl implements TransportationService {
     log.debug("Finding transportation with id: {}", id);
     return transportationRepository
         .findById(id)
-        .orElseThrow(() -> new TransportationNotFoundException(id));
+        .orElseThrow(
+            () -> {
+              log.error("No transportation found with id: {}", id);
+                return new TransportationNotFoundException(id);
+            });
   }
 
   @Override
@@ -63,10 +82,7 @@ public class TransportationServiceImpl implements TransportationService {
 
   @Override
   public Transportation update(Long id, Transportation updatedTransportation) {
-    Transportation existing =
-        transportationRepository
-            .findById(id)
-            .orElseThrow(() -> new TransportationNotFoundException(id));
+    Transportation existing = findById(id);
     log.debug("Updating transportation with id: {}", existing.getId());
 
     existing.setOriginLocation(updatedTransportation.getOriginLocation());
@@ -74,7 +90,15 @@ public class TransportationServiceImpl implements TransportationService {
     existing.setOperatingDays(updatedTransportation.getOperatingDays());
     existing.setTransportationType(updatedTransportation.getTransportationType());
 
-    return transportationRepository.save(existing);
+    try {
+      return transportationRepository.save(existing);
+    } catch (OptimisticLockingFailureException ex) {
+      log.error(
+          "Unable to update transportation because of optimistic lock, with id: {}, version: {}",
+          existing.getId(),
+          existing.getVersion());
+      throw ex;
+    }
   }
 
   @Override

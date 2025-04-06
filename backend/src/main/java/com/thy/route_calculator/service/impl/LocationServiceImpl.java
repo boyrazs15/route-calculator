@@ -1,5 +1,6 @@
 package com.thy.route_calculator.service.impl;
 
+import com.thy.route_calculator.exception.LocationAlreadyExistsException;
 import com.thy.route_calculator.exception.LocationNotFoundException;
 import com.thy.route_calculator.model.entity.Location;
 import com.thy.route_calculator.repository.LocationRepository;
@@ -7,6 +8,8 @@ import com.thy.route_calculator.service.LocationService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -19,13 +22,24 @@ public class LocationServiceImpl implements LocationService {
   @Override
   public Location save(Location location) {
     log.debug("Saving location: {}", location);
-    return locationRepository.save(location);
+    try {
+      return locationRepository.save(location);
+    } catch (DataIntegrityViolationException ex) {
+      log.error("Location already exists with the same code: {}", location.getLocationCode());
+      throw new LocationAlreadyExistsException(location.getLocationCode());
+    }
   }
 
   @Override
   public Location findById(Long id) {
     log.debug("Finding location by id: {}", id);
-    return locationRepository.findById(id).orElseThrow(() -> new LocationNotFoundException(id));
+    return locationRepository
+        .findById(id)
+        .orElseThrow(
+            () -> {
+              log.error("Unable to find location by id: {}", id);
+                return new LocationNotFoundException(id);
+            });
   }
 
   @Override
@@ -35,8 +49,7 @@ public class LocationServiceImpl implements LocationService {
 
   @Override
   public Location update(Long id, Location updatedLocation) {
-    Location existing =
-        locationRepository.findById(id).orElseThrow(() -> new LocationNotFoundException(id));
+    Location existing = findById(id);
     log.debug("Updating location with id: {}", existing.getId());
 
     existing.setName(updatedLocation.getName());
@@ -44,7 +57,15 @@ public class LocationServiceImpl implements LocationService {
     existing.setCity(updatedLocation.getCity());
     existing.setLocationCode(updatedLocation.getLocationCode());
 
-    return locationRepository.save(existing);
+    try {
+      return locationRepository.save(existing);
+    } catch (OptimisticLockingFailureException ex) {
+      log.error(
+          "Unable to update location because of optimistic lock, with id: {}, version: {}",
+          existing.getId(),
+          existing.getVersion());
+      throw ex;
+    }
   }
 
   @Override
