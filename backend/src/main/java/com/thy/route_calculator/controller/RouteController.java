@@ -6,6 +6,7 @@ import com.thy.route_calculator.mapper.RouteListingMapper;
 import com.thy.route_calculator.model.RouteResult;
 import com.thy.route_calculator.service.RouteService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class RouteController {
 
   @GetMapping
   public ResponseEntity<List<RouteListingResponseDto>> listRoutes(
-      @ModelAttribute RouteListingDto dto) {
+      @ModelAttribute @Valid RouteListingDto dto) {
     List<RouteResult> routeResults =
         routeService.listRoutes(
             dto.getOriginLocationId(),
