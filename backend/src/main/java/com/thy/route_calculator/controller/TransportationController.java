@@ -1,6 +1,8 @@
 package com.thy.route_calculator.controller;
 
 import com.thy.route_calculator.dto.TransportationDto;
+import com.thy.route_calculator.dto.response.ApiResponseBuilder;
+import com.thy.route_calculator.dto.response.ApiSuccessResponse;
 import com.thy.route_calculator.dto.response.TransportationResponseDto;
 import com.thy.route_calculator.mapper.TransportationMapper;
 import com.thy.route_calculator.model.entity.Location;
@@ -25,31 +27,32 @@ public class TransportationController {
   private final LocationService locationService;
 
   @PostMapping
-  public ResponseEntity<TransportationResponseDto> createTransportation(
+  public ResponseEntity<ApiSuccessResponse<TransportationResponseDto>> createTransportation(
       @RequestBody TransportationDto dto) {
     Location origin = locationService.findById(dto.getOriginLocationId());
     Location destination = locationService.findById(dto.getDestinationLocationId());
 
     Transportation entity = TransportationMapper.toEntity(dto, origin, destination);
     Transportation saved = transportationService.save(entity);
-    return ResponseEntity.ok(TransportationMapper.toDto(saved));
+    return ApiResponseBuilder.success(TransportationMapper.toDto(saved));
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<TransportationResponseDto> getTransportation(@PathVariable Long id) {
+  public ResponseEntity<ApiSuccessResponse<TransportationResponseDto>> getTransportation(@PathVariable Long id) {
     Transportation transportation = transportationService.findById(id);
-    return ResponseEntity.ok(TransportationMapper.toDto(transportation));
+    return ApiResponseBuilder.success(TransportationMapper.toDto(transportation));
   }
 
   @GetMapping
-  public List<TransportationResponseDto> getAllTransportations() {
-    return transportationService.findAll().stream()
+  public ResponseEntity<ApiSuccessResponse<List<TransportationResponseDto>>> getAllTransportations() {
+    List<TransportationResponseDto> transportations = transportationService.findAll().stream()
         .map(TransportationMapper::toDto)
         .collect(Collectors.toList());
+    return ApiResponseBuilder.success(transportations);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<TransportationResponseDto> updateTransportation(
+  public ResponseEntity<ApiSuccessResponse<TransportationResponseDto>> updateTransportation(
       @PathVariable Long id, @RequestBody TransportationDto dto) {
     Location origin = locationService.findById(dto.getOriginLocationId());
     Location destination = locationService.findById(dto.getDestinationLocationId());
@@ -57,17 +60,17 @@ public class TransportationController {
     Transportation updatedEntity = TransportationMapper.toEntity(dto, origin, destination);
 
     Transportation updated = transportationService.update(id, updatedEntity);
-    return ResponseEntity.ok(TransportationMapper.toDto(updated));
+    return ApiResponseBuilder.success(TransportationMapper.toDto(updated));
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteTransportation(@PathVariable Long id) {
+  public ResponseEntity<ApiSuccessResponse<Object>> deleteTransportation(@PathVariable Long id) {
     transportationService.deleteById(id);
-    return ResponseEntity.noContent().build();
+    return ApiResponseBuilder.success(null);
   }
 
   @GetMapping("/enabled-types")
-  public List<TransportationType> getEnabledTransportationTypes() {
-    return transportationService.getEnabledTransportationTypes();
+  public ResponseEntity<ApiSuccessResponse<List<TransportationType>>> getEnabledTransportationTypes() {
+    return ApiResponseBuilder.success(transportationService.getEnabledTransportationTypes());
   }
 }

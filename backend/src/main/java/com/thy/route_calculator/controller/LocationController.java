@@ -1,6 +1,8 @@
 package com.thy.route_calculator.controller;
 
 import com.thy.route_calculator.dto.LocationDto;
+import com.thy.route_calculator.dto.response.ApiResponseBuilder;
+import com.thy.route_calculator.dto.response.ApiSuccessResponse;
 import com.thy.route_calculator.mapper.LocationMapper;
 import com.thy.route_calculator.model.entity.Location;
 import com.thy.route_calculator.service.LocationService;
@@ -25,34 +27,35 @@ public class LocationController {
   }
 
   @PostMapping
-  public ResponseEntity<LocationDto> createLocation(@Valid @RequestBody LocationDto dto) {
+  public ResponseEntity<ApiSuccessResponse<LocationDto>> createLocation(@Valid @RequestBody LocationDto dto) {
     Location saved = locationService.save(LocationMapper.toEntity(dto));
-    return ResponseEntity.ok(LocationMapper.toDto(saved));
+    return ApiResponseBuilder.success(LocationMapper.toDto(saved));
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<LocationDto> getLocation(@PathVariable Long id) {
+  public ResponseEntity<ApiSuccessResponse<LocationDto>> getLocation(@PathVariable Long id) {
     Location location = locationService.findById(id);
-    return ResponseEntity.ok(LocationMapper.toDto(location));
+    return ApiResponseBuilder.success(LocationMapper.toDto(location));
   }
 
   @GetMapping
-  public List<LocationDto> getAllLocations() {
-    return locationService.findAll().stream()
+  public ResponseEntity<ApiSuccessResponse<List<LocationDto>>> getAllLocations() {
+    List<LocationDto> locations = locationService.findAll().stream()
         .map(LocationMapper::toDto)
         .collect(Collectors.toList());
+    return ApiResponseBuilder.success(locations);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<LocationDto> updateLocation(
+  public ResponseEntity<ApiSuccessResponse<LocationDto>> updateLocation(
       @PathVariable Long id, @Valid @RequestBody LocationDto dto) {
     Location updated = locationService.update(id, LocationMapper.toEntity(dto));
-    return ResponseEntity.ok(LocationMapper.toDto(updated));
+    return ApiResponseBuilder.success(LocationMapper.toDto(updated));
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteLocation(@PathVariable Long id) {
+  public ResponseEntity<ApiSuccessResponse<Object>> deleteLocation(@PathVariable Long id) {
     locationService.deleteById(id);
-    return ResponseEntity.noContent().build();
+    return ApiResponseBuilder.success(null);
   }
 }

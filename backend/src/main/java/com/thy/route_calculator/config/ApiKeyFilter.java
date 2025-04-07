@@ -1,7 +1,7 @@
 package com.thy.route_calculator.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.thy.route_calculator.exception.ApiErrorResponse;
+import com.thy.route_calculator.dto.response.ApiErrorResponse;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

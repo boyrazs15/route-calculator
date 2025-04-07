@@ -2,6 +2,9 @@ package com.thy.route_calculator.exception;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.thy.route_calculator.dto.response.ApiErrorResponse;
+import com.thy.route_calculator.dto.response.ApiResponseBuilder;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +18,7 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(ApiException.class)
   public ResponseEntity<ApiErrorResponse> handleApiException(ApiException ex) {
-    return buildErrorResponse(ex.getErrorCode(), ex.getHttpStatus(), ex.getMessage(), ex.getData());
+    return ApiResponseBuilder.error(ex.getErrorCode(), ex.getHttpStatus(), ex.getMessage(), ex.getData());
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -25,7 +28,7 @@ public class GlobalExceptionHandler {
     ex.getBindingResult()
         .getFieldErrors()
         .forEach(err -> errors.put(err.getField(), err.getDefaultMessage()));
-    return buildErrorResponse(
+    return ApiResponseBuilder.error(
         ErrorCode.BAD_REQUEST,
         HttpStatus.BAD_REQUEST,
         ErrorCode.BAD_REQUEST.getDefaultMessage(),
@@ -43,7 +46,7 @@ public class GlobalExceptionHandler {
 
     DataConflictException conflict = new DataConflictException(modelName);
 
-    return buildErrorResponse(
+    return ApiResponseBuilder.error(
         conflict.getErrorCode(),
         conflict.getHttpStatus(),
         conflict.getMessage(),
@@ -52,20 +55,7 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ApiErrorResponse> handleGeneric(Exception ex) {
-    return buildErrorResponse(
+    return ApiResponseBuilder.error(
         ErrorCode.INTERNAL_ERROR, HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null);
-  }
-
-  private ResponseEntity<ApiErrorResponse> buildErrorResponse(
-      ErrorCode code, HttpStatus status, String msg, Object data) {
-    ApiErrorResponse error =
-        ApiErrorResponse.builder()
-            .message(msg != null ? msg : code.getDefaultMessage())
-            .errorCode(code.getCode())
-            .statusCode(status.value())
-            .data(data)
-            .build();
-
-    return new ResponseEntity<>(error, status);
   }
 }

@@ -9,4 +9,5 @@ export const listRoutes = (originId, destinationId, date) =>
             date: date
         }
     })
+        .then((res)=>res.data)
         .catch((err) => errorToastify(err));

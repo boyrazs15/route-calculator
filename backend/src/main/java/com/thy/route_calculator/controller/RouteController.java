@@ -1,6 +1,8 @@
 package com.thy.route_calculator.controller;
 
 import com.thy.route_calculator.dto.RouteListingDto;
+import com.thy.route_calculator.dto.response.ApiResponseBuilder;
+import com.thy.route_calculator.dto.response.ApiSuccessResponse;
 import com.thy.route_calculator.dto.response.RouteListingResponseDto;
 import com.thy.route_calculator.mapper.RouteListingMapper;
 import com.thy.route_calculator.model.RouteResult;
@@ -21,14 +23,14 @@ public class RouteController {
   private final RouteService routeService;
 
   @GetMapping
-  public ResponseEntity<List<RouteListingResponseDto>> listRoutes(
+  public ResponseEntity<ApiSuccessResponse<List<RouteListingResponseDto>>> listRoutes(
       @ModelAttribute @Valid RouteListingDto dto) {
     List<RouteResult> routeResults =
         routeService.listRoutes(
             dto.getOriginLocationId(),
             dto.getDestinationLocationId(),
             dto.getDate().atStartOfDay());
-    return ResponseEntity.ok(
+    return ApiResponseBuilder.success(
         routeResults.stream().map(RouteListingMapper::toDto).collect(Collectors.toList()));
   }
 }
