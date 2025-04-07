@@ -14,6 +14,7 @@ A simple Spring Boot project that demonstrates CRUD operations for a `Location` 
 - Postman collection for sample requests
 - SpringBootTest for available routes API
 - Backend validations (e.g. duplicate record, db conflict)
+- Cache for locations and transportations
 - Global Exception Handling with `@ControllerAdvice`
 - Generic API Response DTO
 - Config structure for values that can change (transportation types)
