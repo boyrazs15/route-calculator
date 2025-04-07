@@ -1,6 +1,10 @@
+server:
+  port: 8080
 transport:
   enabled-types:
     - FLIGHT
     - UBER
     - BUS
     - SUBWAY
+api:
+  key: sila-key

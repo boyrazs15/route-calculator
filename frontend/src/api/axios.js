@@ -8,6 +8,11 @@ const api = axios.create({
     }
 });
 
+api.interceptors.request.use((config) => {
+    config.headers["X-API-KEY"] = process.env.REACT_APP_API_KEY;
+    return config;
+});
+
 api.interceptors.response.use(
     (response) => response,
     (error) => {
