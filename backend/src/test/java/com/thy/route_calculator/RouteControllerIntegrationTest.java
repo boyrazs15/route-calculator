@@ -30,7 +30,7 @@ import org.testcontainers.junit.jupiter.Container;
                 "/transportation.sql",
                 "/transportation_operating_days.sql"
         },
-        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS
 )
 class RouteControllerIntegrationTest {
 
@@ -112,16 +112,16 @@ class RouteControllerIntegrationTest {
             TransportationType.UBER.toString(),
             TransportationType.SUBWAY.toString());
 
-    RouteListingResponseDto firstRoute = routes.get(0);
+    RouteListingResponseDto firstRoute = routes.get(2);
     assertThat(firstRoute.getBeforeFlightTransfer()).isNotNull();
     assertThat(firstRoute.getBeforeFlightTransfer().getTransportationType())
         .isEqualTo(TransportationType.SUBWAY);
-    assertThat(firstRoute.getFlight().getOrigin()).isEqualTo("İstanbul Airport");
+    assertThat(firstRoute.getFlight().getOrigin()).isEqualTo("İstanbul Havalimanı");
     assertThat(firstRoute.getAfterFlightTransfer().getOrigin())
         .isEqualTo("London Heathrow Airport");
     assertThat(firstRoute.getAfterFlightTransfer().getDestination()).isEqualTo("Wembley Stadium");
     assertThat(firstRoute.getAfterFlightTransfer().getTransportationType())
-        .isEqualTo(TransportationType.UBER);
+        .isEqualTo(TransportationType.BUS);
 
     RouteListingResponseDto forthRoute = routes.get(5);
     assertThat(forthRoute.getAfterFlightTransfer()).isNotNull();
@@ -130,7 +130,7 @@ class RouteControllerIntegrationTest {
     assertThat(forthRoute.getBeforeFlightTransfer().getTransportationType())
         .isEqualTo(TransportationType.SUBWAY);
     assertThat(forthRoute.getAfterFlightTransfer().getTransportationType())
-        .isEqualTo(TransportationType.BUS);
+        .isEqualTo(TransportationType.UBER);
   }
 
   @Test
@@ -164,8 +164,8 @@ class RouteControllerIntegrationTest {
     RouteListingResponseDto firstRoute = routes.get(0);
     assertThat(firstRoute.getBeforeFlightTransfer()).isNotNull();
     assertThat(firstRoute.getBeforeFlightTransfer().getTransportationType())
-        .isEqualTo(TransportationType.SUBWAY);
-    assertThat(firstRoute.getFlight().getOrigin()).isEqualTo("İstanbul Airport");
+        .isEqualTo(TransportationType.BUS);
+    assertThat(firstRoute.getFlight().getOrigin()).isEqualTo("İstanbul Havalimanı");
     assertThat(firstRoute.getAfterFlightTransfer().getOrigin())
         .isEqualTo("London Heathrow Airport");
     assertThat(firstRoute.getAfterFlightTransfer().getDestination()).isEqualTo("Wembley Stadium");
