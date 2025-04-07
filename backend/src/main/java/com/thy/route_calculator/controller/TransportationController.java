@@ -5,6 +5,7 @@ import com.thy.route_calculator.dto.response.TransportationResponseDto;
 import com.thy.route_calculator.mapper.TransportationMapper;
 import com.thy.route_calculator.model.entity.Location;
 import com.thy.route_calculator.model.entity.Transportation;
+import com.thy.route_calculator.model.enums.TransportationType;
 import com.thy.route_calculator.service.LocationService;
 import com.thy.route_calculator.service.TransportationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -63,5 +64,10 @@ public class TransportationController {
   public ResponseEntity<Void> deleteTransportation(@PathVariable Long id) {
     transportationService.deleteById(id);
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("/enabled-types")
+  public List<TransportationType> getEnabledTransportationTypes() {
+    return transportationService.getEnabledTransportationTypes();
   }
 }

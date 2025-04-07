@@ -12,3 +12,5 @@ export const updateTransportation = (id, data) => api.put(`/transportations/${id
 export const deleteTransportation = (id) => api.delete(`/transportations/${id}`)
     .then(() => successToastify("Transportation deleted successfully"))
     .catch((err) => errorToastify(err));
+export const getEnabledTransportationTypes = () => api.get(`/transportations/enabled-types`)
+    .catch((err) => errorToastify(err));

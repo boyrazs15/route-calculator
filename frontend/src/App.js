@@ -4,7 +4,6 @@ import Locations from './pages/Locations';
 import Transportations from './pages/Transportations';
 import RoutesPage from './pages/Routes';
 import './App.css';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {

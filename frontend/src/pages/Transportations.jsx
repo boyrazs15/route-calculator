@@ -1,11 +1,18 @@
 import { useEffect, useState } from 'react';
 import { getLocations} from '../api/locations';
-import { getTransportations, createTransportation, updateTransportation, deleteTransportation } from '../api/transportations';
+import {
+    getTransportations,
+    createTransportation,
+    updateTransportation,
+    deleteTransportation,
+    getEnabledTransportationTypes
+} from '../api/transportations';
 import { ToastContainer } from 'react-toastify';
 
 export default function Transportations() {
     const [locations, setLocations] = useState([]);
     const [transportations, setTransportations] = useState([]);
+    const [enabledTransportationTypes, setEnabledTransportationTypes] = useState([]);
 
     const [form, setForm] = useState({
         originLocationId: '',
@@ -36,6 +43,7 @@ export default function Transportations() {
         getLocations()
             .then(res => setLocations(res.data));
         fetchTransportations();
+        getEnabledTransportationTypes().then(res => setEnabledTransportationTypes(res.data));
     }, []);
 
     const fetchTransportations = () => {
@@ -124,11 +132,12 @@ export default function Transportations() {
             </select>
 
             <select className="select-input" name="transportationType" value={form.transportationType} onChange={handleChange}>
-                <option value="FLIGHT">FLIGHT</option>
-                <option value="BUS">BUS</option>
-                <option value="SUBWAY">SUBWAY</option>
-                <option value="UBER">UBER</option>
+                <option value="">Select Transportation Type</option>
+                {enabledTransportationTypes.map(type => (
+                    <option key={type} value={type}>{type}</option>
+                ))}
             </select>
+
 
             <div style={{ display: 'flex', gap: '0.5rem', margin: '1rem 0' }}>
                 {daysOfWeek.map(day => (
@@ -190,10 +199,10 @@ export default function Transportations() {
                         </select>
 
                         <select name="transportationType" value={editForm.transportationType} onChange={handleEditChange}>
-                            <option value="FLIGHT">FLIGHT</option>
-                            <option value="BUS">BUS</option>
-                            <option value="SUBWAY">SUBWAY</option>
-                            <option value="UBER">UBER</option>
+                            <option value="">Select Transportation Type</option>
+                            {enabledTransportationTypes.map(type => (
+                                <option key={type} value={type}>{type}</option>
+                            ))}
                         </select>
 
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', margin: '1rem 0' }}>

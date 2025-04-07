@@ -1,0 +1,6 @@
+transport:
+  enabled-types:
+    - FLIGHT
+    - UBER
+    - BUS
+    - SUBWAY

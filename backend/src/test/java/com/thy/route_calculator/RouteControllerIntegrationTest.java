@@ -19,19 +19,14 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(
-        scripts = {
-                "/location.sql",
-                "/transportation.sql",
-                "/transportation_operating_days.sql"
-        },
-        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS
-)
+    scripts = {"/location.sql", "/transportation.sql", "/transportation_operating_days.sql"},
+    executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 class RouteControllerIntegrationTest {
 
   @LocalServerPort private int port;
@@ -39,7 +34,8 @@ class RouteControllerIntegrationTest {
   private final RestTemplate restTemplate = new RestTemplate();
 
   @Container
-  static PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:15")
+  static PostgreSQLContainer<?> postgresContainer =
+      new PostgreSQLContainer<>("postgres:15")
           .withDatabaseName("routedb")
           .withUsername("thy_user")
           .withPassword("123456");

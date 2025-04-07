@@ -38,8 +38,8 @@ public class Transportation extends BaseEntity {
   private TransportationType transportationType;
 
   /**
-   * Haftanın hangi günlerinde çalıştığını belirten alan.
-   * transportation_operating_days tablosundaki day_of_week sütunundan gelir.
+   * Haftanın hangi günlerinde çalıştığını belirten alan. transportation_operating_days tablosundaki
+   * day_of_week sütunundan gelir.
    */
   @ElementCollection
   @CollectionTable(

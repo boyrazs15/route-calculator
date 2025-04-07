@@ -1,5 +1,6 @@
 package com.thy.route_calculator.service.impl;
 
+import com.thy.route_calculator.config.TransportProperties;
 import com.thy.route_calculator.exception.TransportationAlreadyExistsException;
 import com.thy.route_calculator.exception.TransportationNotFoundException;
 import com.thy.route_calculator.exception.TransportationNotProcessableException;
@@ -9,8 +10,8 @@ import com.thy.route_calculator.repository.TransportationRepository;
 import com.thy.route_calculator.service.TransportationService;
 import java.time.DayOfWeek;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -18,14 +19,11 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class TransportationServiceImpl implements TransportationService {
 
   private final TransportationRepository transportationRepository;
-
-  @Autowired
-  public TransportationServiceImpl(TransportationRepository transportationRepository) {
-    this.transportationRepository = transportationRepository;
-  }
+  private final TransportProperties transportProperties;
 
   @Override
   public Transportation save(Transportation transportation) {
@@ -116,5 +114,9 @@ public class TransportationServiceImpl implements TransportationService {
   public void deleteById(Long id) {
     log.debug("Deleting transportation with id: {}", id);
     transportationRepository.deleteById(id);
+  }
+
+  public List<TransportationType> getEnabledTransportationTypes() {
+    return transportProperties.getEnabledTransportationTypes();
   }
 }

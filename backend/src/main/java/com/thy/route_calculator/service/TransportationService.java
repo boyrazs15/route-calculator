@@ -1,6 +1,7 @@
 package com.thy.route_calculator.service;
 
 import com.thy.route_calculator.model.entity.Transportation;
+import com.thy.route_calculator.model.enums.TransportationType;
 import java.time.DayOfWeek;
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface TransportationService {
   Transportation update(Long id, Transportation transportation);
 
   void deleteById(Long id);
+
+  List<TransportationType> getEnabledTransportationTypes();
 }
