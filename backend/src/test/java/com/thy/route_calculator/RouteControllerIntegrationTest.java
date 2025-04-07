@@ -3,27 +3,53 @@ package com.thy.route_calculator;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thy.route_calculator.dto.response.RouteListingResponseDto;
 import com.thy.route_calculator.exception.ErrorCode;
 import com.thy.route_calculator.model.enums.TransportationType;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.junit.jupiter.Container;
 
+@Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Sql(
+        scripts = {
+                "/location.sql",
+                "/transportation.sql",
+                "/transportation_operating_days.sql"
+        },
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
+)
 class RouteControllerIntegrationTest {
 
   @LocalServerPort private int port;
 
   private final RestTemplate restTemplate = new RestTemplate();
+
+  @Container
+  static PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:15")
+          .withDatabaseName("routedb")
+          .withUsername("thy_user")
+          .withPassword("123456");
+
+  @DynamicPropertySource
+  static void configureProperties(DynamicPropertyRegistry registry) {
+    registry.add("spring.datasource.url", postgresContainer::getJdbcUrl);
+    registry.add("spring.datasource.username", postgresContainer::getUsername);
+    registry.add("spring.datasource.password", postgresContainer::getPassword);
+  }
 
   private String buildQuery(Long origin, Long destination, LocalDate date) {
     return "?originLocationId="
