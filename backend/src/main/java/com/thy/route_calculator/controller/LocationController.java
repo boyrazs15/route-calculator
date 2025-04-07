@@ -27,7 +27,8 @@ public class LocationController {
   }
 
   @PostMapping
-  public ResponseEntity<ApiSuccessResponse<LocationDto>> createLocation(@Valid @RequestBody LocationDto dto) {
+  public ResponseEntity<ApiSuccessResponse<LocationDto>> createLocation(
+      @Valid @RequestBody LocationDto dto) {
     Location saved = locationService.save(LocationMapper.toEntity(dto));
     return ApiResponseBuilder.success(LocationMapper.toDto(saved));
   }
@@ -40,9 +41,8 @@ public class LocationController {
 
   @GetMapping
   public ResponseEntity<ApiSuccessResponse<List<LocationDto>>> getAllLocations() {
-    List<LocationDto> locations = locationService.findAll().stream()
-        .map(LocationMapper::toDto)
-        .collect(Collectors.toList());
+    List<LocationDto> locations =
+        locationService.findAll().stream().map(LocationMapper::toDto).collect(Collectors.toList());
     return ApiResponseBuilder.success(locations);
   }
 

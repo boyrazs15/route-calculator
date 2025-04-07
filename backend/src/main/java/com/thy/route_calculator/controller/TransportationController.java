@@ -38,16 +38,19 @@ public class TransportationController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<ApiSuccessResponse<TransportationResponseDto>> getTransportation(@PathVariable Long id) {
+  public ResponseEntity<ApiSuccessResponse<TransportationResponseDto>> getTransportation(
+      @PathVariable Long id) {
     Transportation transportation = transportationService.findById(id);
     return ApiResponseBuilder.success(TransportationMapper.toDto(transportation));
   }
 
   @GetMapping
-  public ResponseEntity<ApiSuccessResponse<List<TransportationResponseDto>>> getAllTransportations() {
-    List<TransportationResponseDto> transportations = transportationService.findAll().stream()
-        .map(TransportationMapper::toDto)
-        .collect(Collectors.toList());
+  public ResponseEntity<ApiSuccessResponse<List<TransportationResponseDto>>>
+      getAllTransportations() {
+    List<TransportationResponseDto> transportations =
+        transportationService.findAll().stream()
+            .map(TransportationMapper::toDto)
+            .collect(Collectors.toList());
     return ApiResponseBuilder.success(transportations);
   }
 
@@ -70,7 +73,8 @@ public class TransportationController {
   }
 
   @GetMapping("/enabled-types")
-  public ResponseEntity<ApiSuccessResponse<List<TransportationType>>> getEnabledTransportationTypes() {
+  public ResponseEntity<ApiSuccessResponse<List<TransportationType>>>
+      getEnabledTransportationTypes() {
     return ApiResponseBuilder.success(transportationService.getEnabledTransportationTypes());
   }
 }

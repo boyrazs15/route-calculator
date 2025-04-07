@@ -1,10 +1,9 @@
 package com.thy.route_calculator.exception;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.thy.route_calculator.dto.response.ApiErrorResponse;
 import com.thy.route_calculator.dto.response.ApiResponseBuilder;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +17,8 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(ApiException.class)
   public ResponseEntity<ApiErrorResponse> handleApiException(ApiException ex) {
-    return ApiResponseBuilder.error(ex.getErrorCode(), ex.getHttpStatus(), ex.getMessage(), ex.getData());
+    return ApiResponseBuilder.error(
+        ex.getErrorCode(), ex.getHttpStatus(), ex.getMessage(), ex.getData());
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)

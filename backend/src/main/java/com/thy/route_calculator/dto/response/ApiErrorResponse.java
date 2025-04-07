@@ -11,6 +11,7 @@ public class ApiErrorResponse {
   private String message;
   private String errorCode;
   private int statusCode;
+
   @Schema(nullable = true)
   private Object data;
 }

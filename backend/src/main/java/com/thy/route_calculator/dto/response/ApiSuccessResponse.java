@@ -7,7 +7,8 @@ import lombok.Getter;
 @Getter
 @Builder
 public class ApiSuccessResponse<T> {
-    private boolean success;
-    @Schema(nullable = true)
-    private T data;
+  private boolean success;
+
+  @Schema(nullable = true)
+  private T data;
 }
