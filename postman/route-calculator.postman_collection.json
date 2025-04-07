@@ -1,0 +1,339 @@
+{
+  "info": {
+    "_postman_id": "b400bd36-8824-475f-922b-0f45bc536876",
+    "name": "Route Calculator API",
+    "description": "Postman collection for Location, Route, and Transportation controllers.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "32543930"
+  },
+  "item": [
+    {
+      "name": "Locations",
+      "item": [
+        {
+          "name": "Create Location",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Istanbul Airport\",\n  \"country\": \"Turkey\",\n  \"city\": \"Istanbul\",\n  \"locationCode\": \"IST\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/locations",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "locations"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Locations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/locations",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "locations"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Location by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/locations/{{location_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "locations",
+                "{{location_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Location",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Name\",\n  \"country\": \"Turkey\",\n  \"city\": \"Ankara\",\n  \"locationCode\": \"ANK\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/locations/{{location_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "locations",
+                "{{location_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Location",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/locations/{{location_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "locations",
+                "{{location_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Transportations",
+      "item": [
+        {
+          "name": "Create Transportation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"originLocationId\": 1,\n  \"destinationLocationId\": 2,\n  \"transportationType\": \"FLIGHT\",\n  \"operatingDays\": [\n    1,\n    2,\n    3,\n    4,\n    5\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/transportations",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "transportations"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Transportations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/transportations",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "transportations"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Transportation by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/transportations/{{transportation_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "transportations",
+                "{{transportation_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Transportation",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"originLocationId\": 1,\n  \"destinationLocationId\": 2,\n  \"transportationType\": \"UBER\",\n  \"operatingDays\": [\n    1,\n    3,\n    5\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/transportations/{{transportation_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "transportations",
+                "{{transportation_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Transportation",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/transportations/{{transportation_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "transportations",
+                "{{transportation_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Enabled Transportation Types",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/transportations/enabled-types",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "transportations",
+                "enabled-types"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "RouteList",
+      "item": [
+        {
+          "name": "List Routes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/routes?originLocationId={location_id}&destinationLocationId={destination_id}&date=2025-04-07",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "routes"
+              ],
+              "query": [
+                {
+                  "key": "originLocationId",
+                  "value": "{location_id}"
+                },
+                {
+                  "key": "destinationLocationId",
+                  "value": "{destination_id}"
+                },
+                {
+                  "key": "date",
+                  "value": "2025-04-07"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
