@@ -15,7 +15,11 @@ A simple Spring Boot project that demonstrates CRUD operations for a `Location` 
 - SpringBootTest for available routes API
 - Backend validations (e.g. duplicate record, db conflict)
 - Global Exception Handling with `@ControllerAdvice`
+- Generic API Response DTO
 - Config structure for values that can change (transportation types)
+- Health check http://localhost:8080/actuator/health
+- Security check with X-API-KEY filter
+- Rate Limiter filter
 - Notifications with Toastify (frontend)
 
 ## 📦 Project Structure
@@ -71,6 +75,7 @@ Using terminal:
    ```bash
    cd ..
    cd frontend
+   cp .env.example .env
    npm install
    npm run start
    ```

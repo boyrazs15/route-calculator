@@ -8,3 +8,8 @@ transport:
     - SUBWAY
 api:
   key: sila-key
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
