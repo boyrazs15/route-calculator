@@ -18,6 +18,10 @@
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "X-API-KEY",
+                "value": "sila-key"
               }
             ],
             "body": {
@@ -45,6 +49,10 @@
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "X-API-KEY",
+                "value": "sila-key"
               }
             ],
             "url": {
@@ -68,6 +76,10 @@
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "X-API-KEY",
+                "value": "sila-key"
               }
             ],
             "url": {
@@ -92,6 +104,10 @@
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "X-API-KEY",
+                "value": "sila-key"
               }
             ],
             "body": {
@@ -120,6 +136,10 @@
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "X-API-KEY",
+                "value": "sila-key"
               }
             ],
             "url": {
@@ -149,11 +169,15 @@
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "X-API-KEY",
+                "value": "sila-key"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"originLocationId\": 1,\n  \"destinationLocationId\": 2,\n  \"transportationType\": \"FLIGHT\",\n  \"operatingDays\": [\n    1,\n    2,\n    3,\n    4,\n    5\n  ]\n}"
+              "raw": "{\n  \"originLocationId\": 1,\n  \"destinationLocationId\": 2,\n  \"transportationType\": \"FLIGHT\",\n  \"operatingDays\": [1,2,3,4,5]\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/transportations",
@@ -176,6 +200,10 @@
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "X-API-KEY",
+                "value": "sila-key"
               }
             ],
             "url": {
@@ -199,6 +227,10 @@
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "X-API-KEY",
+                "value": "sila-key"
               }
             ],
             "url": {
@@ -223,11 +255,15 @@
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "X-API-KEY",
+                "value": "sila-key"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"originLocationId\": 1,\n  \"destinationLocationId\": 2,\n  \"transportationType\": \"UBER\",\n  \"operatingDays\": [\n    1,\n    3,\n    5\n  ]\n}"
+              "raw": "{\n  \"originLocationId\": 1,\n  \"destinationLocationId\": 2,\n  \"transportationType\": \"UBER\",\n  \"operatingDays\": [1,3,5]\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/transportations/{{transportation_id}}",
@@ -251,6 +287,10 @@
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "X-API-KEY",
+                "value": "sila-key"
               }
             ],
             "url": {
@@ -275,6 +315,10 @@
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "X-API-KEY",
+                "value": "sila-key"
               }
             ],
             "url": {
@@ -304,6 +348,10 @@
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "X-API-KEY",
+                "value": "sila-key"
               }
             ],
             "url": {
