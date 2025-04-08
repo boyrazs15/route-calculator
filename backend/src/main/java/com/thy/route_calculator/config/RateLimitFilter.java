@@ -1,5 +1,7 @@
 package com.thy.route_calculator.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thy.route_calculator.dto.response.ApiErrorResponse;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Refill;
@@ -10,6 +12,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -39,8 +42,17 @@ public class RateLimitFilter implements Filter {
     if (bucket.tryConsume(1)) {
       chain.doFilter(request, response);
     } else {
-      httpRes.setStatus(429);
-      httpRes.getWriter().write("Too many requests - rate limit exceeded");
+      ObjectMapper mapper = new ObjectMapper();
+      ApiErrorResponse error =
+          ApiErrorResponse.builder()
+              .errorCode("TOO_MANY_REQUESTS")
+              .message("Too many requests - rate limit exceeded")
+              .statusCode(HttpStatus.TOO_MANY_REQUESTS.value())
+              .build();
+
+      httpRes.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
+      httpRes.setContentType("application/json");
+      httpRes.getWriter().write(mapper.writeValueAsString(error));
     }
   }
 }
