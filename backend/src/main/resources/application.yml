@@ -1,13 +1,48 @@
+spring:
+  application:
+    name: route-calculator
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/route_calculator
+    username: thy_user
+    password: 123456
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  cache:
+    type: simple
+
 server:
   port: 8080
+
+springdoc:
+  swagger-ui:
+    path: /documentation
+
+logging:
+  level:
+    root: INFO
+    com.thy: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} %-5level - %msg%n"
+
 transport:
   enabled-types:
     - FLIGHT
     - UBER
     - BUS
     - SUBWAY
+
 api:
   key: sila-key
+
 management:
   endpoints:
     web:

@@ -52,7 +52,7 @@ Preferences → Build, Execution, Deployment → Compiler → Annotation Process
 
 ### 1. Clone the Project
 ```bash
-git clone https://github.com/your-username/route-calculator.git
+git clone https://github.com/boyrazs15/route-calculator.git
 cd route-calculator
 ```
 ### 2. PostgreSQL Setup

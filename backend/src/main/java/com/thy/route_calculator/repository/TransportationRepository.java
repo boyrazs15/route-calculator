@@ -21,6 +21,8 @@ public interface TransportationRepository extends JpaRepository<Transportation, 
 
   @Query(
       "SELECT t FROM Transportation t "
+          + "JOIN FETCH t.originLocation "
+          + "JOIN FETCH t.destinationLocation "
           + "WHERE t.transportationType = :type "
           + "AND t.originLocation.city = :originCity "
           + "AND t.destinationLocation.city = :destinationCity "
@@ -33,6 +35,8 @@ public interface TransportationRepository extends JpaRepository<Transportation, 
 
   @Query(
       "SELECT t FROM Transportation t "
+          + "JOIN FETCH t.originLocation "
+          + "JOIN FETCH t.destinationLocation "
           + "WHERE t.transportationType <> :excludedType "
           + "AND t.originLocation.id = :originId "
           + "AND t.destinationLocation.id = :destinationId "
